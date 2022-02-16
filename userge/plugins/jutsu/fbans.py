@@ -16,7 +16,6 @@ from pyrogram.errors import FloodWait, PeerIdInvalid, UserBannedInChannel
 
 from userge import Config, Message, get_collection, userge
 from userge.helpers import extract_id, report_user
-from userge.helpers.jutsu_tools import get_response
 from userge.plugins.tools.sudo import SAVED_SETTINGS
 
 FBAN_LOG_CHANNEL = os.environ.get("FBAN_LOG_CHANNEL")
@@ -157,7 +156,10 @@ async def fban_(message: Message):
         user = split_[0]
         if not user.isdigit() and not user.startswith("@"):
             user = extract_id(message.text)
-        reason = split_[1]
+        if len(split_) == 2:
+            reason = split_[1]
+        else:
+            reason = "not specified"
     else:
         user = message.reply_to_message.from_user.id
         reason = input
@@ -189,13 +191,19 @@ async def fban_(message: Message):
             await CHANNEL.log(d_err)
             try:
                 async with userge.conversation(message.chat.id) as conv:
-                    response = await conv.get_response(mark_read=True, filters=(filters.user([message.from_user.id])))
-            except:
-                return await message.edit(f"`Fban terminated...\nReason: Response timeout.`")
+                    response = await conv.get_response(
+                        mark_read=True, filters=(filters.user([message.from_user.id]))
+                    )
+            except BaseException:
+                return await message.edit(
+                    f"`Fban terminated...\nReason: Response timeout.`"
+                )
             if response.text == "y":
                 pass
             else:
-                return await message.edit(f"`Fban terminated...\nReason: User didn't continue.`")
+                return await message.edit(
+                    f"`Fban terminated...\nReason: User didn't continue.`"
+                )
         if (
             user in Config.SUDO_USERS
             or user in Config.OWNER_ID
@@ -222,6 +230,7 @@ async def fban_(message: Message):
             await userge.send_message(
                 chat_id,
                 f"/fban {user} {reason}",
+                disable_web_page_preview=True,
             )
         except UserBannedInChannel:
             pass
@@ -378,7 +387,7 @@ async def fban_p(message: Message):
             await CHANNEL.log(d_err)
         try:
             reason = split_[1]
-        except:
+        except BaseException:
             reason = "not specified"
         if (
             user in Config.SUDO_USERS
@@ -415,7 +424,7 @@ async def fban_p(message: Message):
             msg_id=proof,
             reason=reason,
         )
-        reported = "</b>and <b>reported "
+        reported = "</b> and <b>reported "
     else:
         reported = ""
     async for data in FED_LIST.find():

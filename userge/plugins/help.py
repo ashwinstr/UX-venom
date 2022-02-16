@@ -1,6 +1,5 @@
 import os
 import re
-import traceback
 from math import ceil
 from typing import Any, Callable, Dict, List, Union
 
@@ -8,7 +7,9 @@ import ujson
 from html_telegraph_poster import TelegraphPoster
 from pyrogram import filters
 from pyrogram.errors import BadRequest, MessageIdInvalid, MessageNotModified
-from pyrogram.types import (  # InlineQueryResultCachedDocument,; InlineQueryResultCachedPhoto,
+from pyrogram.types import (
+    InlineQueryResultCachedDocument,
+    InlineQueryResultCachedPhoto,
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -40,6 +41,8 @@ from .jutsu.ivotings import vote_buttons
 from .misc.redditdl import reddit_thumb_link
 from .utils.notes import get_inote
 
+# from .inline_ivoting import alive_inline_q
+
 CHANNEL = userge.getCLogger(__name__)
 
 _CATEGORY = {
@@ -58,6 +61,7 @@ _CATEGORY = {
 }
 # Database
 SAVED_SETTINGS = get_collection("CONFIGS")
+IBUTTON = get_collection("INLINE_BUTTON")
 VOTE = get_collection("VOTES")
 SEEN_BY = get_collection("SEEN_BY")
 REPO_X = InlineQueryResultArticle(
@@ -967,7 +971,7 @@ if userge.has_bot:
                                     )
                                 )
 
-            if str_y[0] == "voting" and len(str_y) == 2:
+            """ if str_y[0] == "voting" and len(str_y) == 2:
                 id_ = userge.rnd_id()
                 up = 0
                 down = 0
@@ -1027,7 +1031,7 @@ if userge.has_bot:
                             description="Vote your opinion.",
                             reply_markup=vote_buttons(up, down, anon, id_),
                         )
-                    )
+                    ) """
 
             if str_y[0] == "attent" and len(str_y) == 2:
                 notice = str_y[-1]
@@ -1068,7 +1072,7 @@ if userge.has_bot:
                         "seen": view_data[rnd_id]["seen"],
                         "notice": view_data[rnd_id]["notice"],
                         "user_first_names": view_data[rnd_id]["user_first_names"],
-                        "sender": view_data[rnd_id]["sender"]
+                        "sender": view_data[rnd_id]["sender"],
                     }
                 )
                 results.append(

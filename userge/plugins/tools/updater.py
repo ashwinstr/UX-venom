@@ -111,17 +111,13 @@ async def check_update(message: Message):
                 await UPDATE_MSG.update_one(
                     {"_id": "UPDATE_MSG"},
                     {"$set": {"message": f"{update.chat.id}/{update.message_id}"}},
-                    upsert=True
+                    upsert=True,
                 )
                 await UPDATE_MSG.update_one(
-                    {"_id": "UPDATE_MSG"},
-                    {"$set": {"time": be_update}},
-                    upsert=True
+                    {"_id": "UPDATE_MSG"}, {"$set": {"time": be_update}}, upsert=True
                 )
                 await UPDATE_MSG.update_one(
-                    {"_id": "UPDATE_MSG"},
-                    {"$set": {"process": "updated"}},
-                    upsert=True
+                    {"_id": "UPDATE_MSG"}, {"$set": {"process": "updated"}}, upsert=True
                 )
                 asyncio.get_event_loop().create_task(userge.restart(True))
         elif push_to_heroku:

@@ -8,7 +8,7 @@ gitpython>=3.1.11
 google-api-python-client>=1.12.8
 google-auth-httplib2>=0.0.4
 google-auth-oauthlib>=0.4.2
-google_images_download
+git+https://github.com/Joeclinton1/google-images-download@patch-1
 googletrans==3.1.0a0
 hachoir>=3.1.1
 heroku3>=4.2.3
@@ -21,8 +21,8 @@ Pillow==8.4.0
 psutil>=5.7.3
 pybase64>=1.1.1
 PyDictionary>=2.0.1
-# git+https://github.com/pyrogram/pyrogram.git@master>=1.2.12
-pyrogram>=1.2.11
+git+https://github.com/ashwinstr/pyrogram.git@x21
+# pyrogram>=1.2.11
 pySmartDL>=1.3.4
 python-dotenv>=0.15.0
 pytz>=2020.4
