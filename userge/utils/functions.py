@@ -57,6 +57,13 @@ async def media_to_image(message):
             await message.err("```Sticker not found...```")
             return
         dls_loc = stkr_file
+    elif replied.sticker and replied.sticker.file_name.endswith(".webm"):
+        stkr_file = os.path.join(Config.DOWN_PATH, "video_stkr.png")
+        os.rename(dls_loc, stkr_file)
+        if not os.path.lexists(stkr_file):
+            await message.err("```Sticker not found...```")
+            return
+        dls_loc = stkr_file
     elif replied.animation or replied.video:
         await message.edit("`Converting Media To Image ...`")
         jpg_file = os.path.join(Config.DOWN_PATH, "image.jpg")
@@ -146,7 +153,7 @@ def rand_key():
 def check_owner(func):
     async def wrapper(_, c_q: CallbackQuery):
         if c_q.from_user and (
-            c_q.from_user.id in Config.OWNER_ID or c_q.from_user.id in Config.SUDO_USERS
+            c_q.from_user.id in Config.OWNER_ID or c_q.from_user.id in Config.SUDO_USERS or c_q.from_user.id in Config.TRUSTED_SUDO_USERS
         ):
             try:
                 await func(c_q)

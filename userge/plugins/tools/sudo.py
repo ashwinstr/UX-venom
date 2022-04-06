@@ -18,6 +18,7 @@ SAVED_SETTINGS = get_collection("CONFIGS")
 TRUSTED_SUDO_USERS = get_collection("trusted_sudo_users")
 SUDO_USERS_COLLECTION = get_collection("sudo_users")
 SUDO_CMDS_COLLECTION = get_collection("sudo_cmds")
+DISABLED_TSUDO = get_collection("DISABLED_TSUDO")
 
 
 async def _init() -> None:
@@ -27,6 +28,9 @@ async def _init() -> None:
     async for i in SUDO_USERS_COLLECTION.find():
         Config.SUDO_USERS.add(i["_id"])
     async for i in TRUSTED_SUDO_USERS.find():
+        in_disabled = await DISABLED_TSUDO.find_one({"_id": i["_id"]})
+        if in_disabled:
+            continue
         Config.TRUSTED_SUDO_USERS.add(i["_id"])
     async for i in SUDO_CMDS_COLLECTION.find():
         Config.ALLOWED_COMMANDS.add(i["_id"])
@@ -106,9 +110,10 @@ async def add_sudo(message: Message):
             if user["id"] in Config.SUDO_USERS:
                 Config.SUDO_USERS.remove(user["id"])
                 await SUDO_USERS_COLLECTION.delete_one({"_id": user["id"]})
-            else:
-                pass
-            Config.TRUSTED_SUDO_USERS.add(user["id"])
+            elif user['id'] in Config.DISABLED_TSUDO:
+                await message.edit("`User is in DISABLED_TSUDO, tell them to enable...`")
+                return
+            Config.TRUSTED_SUDO_USERS.add(user['id'])
             await asyncio.gather(
                 TRUSTED_SUDO_USERS.insert_one(
                     {"_id": user["id"], "men": user["mention"]}
@@ -135,8 +140,9 @@ async def add_sudo(message: Message):
         if user["id"] in Config.TRUSTED_SUDO_USERS:
             Config.TRUSTED_SUDO_USERS.remove(user["id"])
             await TRUSTED_SUDO_USERS.delete_one({"_id": user["id"]})
-        else:
-            pass
+        elif user['id'] in Config.DISABLED_TSUDO:
+            Config.DISABLED_TSUDO.remove(user['id'])
+            await DISABLED_TSUDO.delete_one({"_id": user['id']})
         Config.SUDO_USERS.add(user["id"])
         await asyncio.gather(
             SUDO_USERS_COLLECTION.insert_one(
@@ -164,9 +170,11 @@ async def del_sudo(message: Message):
     if "-all" in message.flags:
         Config.SUDO_USERS.clear()
         Config.TRUSTED_SUDO_USERS.clear()
+        Config.DISABLED_TSUDO.clear()
         await asyncio.gather(
             SUDO_USERS_COLLECTION.drop(),
             TRUSTED_SUDO_USERS.drop(),
+            DISABLED_TSUDO.drop(),
             message.edit("**SUDO** users cleared!", del_in=5),
         )
         return
@@ -181,8 +189,18 @@ async def del_sudo(message: Message):
     if not isinstance(user_id, int):
         await message.err("invalid type!")
         return
-    if user_id not in Config.TRUSTED_SUDO_USERS and user_id not in Config.SUDO_USERS:
+    if user_id not in Config.TRUSTED_SUDO_USERS and user_id not in Config.DISABLED_TSUDO and user_id not in Config.SUDO_USERS:
         await message.edit(f"user : `{user_id}` already not in any **SUDO**!", del_in=5)
+    if user_id in Config.DISABLED_TSUDO:
+        Config.DISABLED_TSUDO.remove(user_id)
+        await asyncio.gather(
+            DISABLED_TSUDO.delete_one({"_id": user_id}),
+            message.edit(
+                f"user : `{user_id}` removed from **DISABLED SUDO**!",
+                del_in=5,
+                log=__name__,
+            ),
+        )
     elif user_id in Config.TRUSTED_SUDO_USERS:
         Config.TRUSTED_SUDO_USERS.remove(user_id)
         await asyncio.gather(
@@ -206,7 +224,7 @@ async def del_sudo(message: Message):
 @userge.on_cmd("vsudo", about={"header": "view sudo users"}, allow_channels=False)
 async def view_sudo(message: Message):
     """view sudo users"""
-    if not Config.SUDO_USERS and not Config.TRUSTED_SUDO_USERS:
+    if not Config.SUDO_USERS and not Config.DISABLED_TSUDO and not Config.TRUSTED_SUDO_USERS:
         await message.edit("**SUDO** users not found!", del_in=5)
         return
     out_str = "**TRUSTED SUDO USERS**: [{}]\n\n"
@@ -214,12 +232,17 @@ async def view_sudo(message: Message):
     async for user in TRUSTED_SUDO_USERS.find():
         tr_total += 1
         out_str += f" 👤 {user['men']} #⃣ `{user['_id']}`\n"
+    out_str += "\n**DISABLED SUDO USERS**: [{}]\n\n"
+    dis_total = 0
+    async for user in DISABLED_TSUDO.find():
+        dis_total += 1
+        out_str += f" 👤 {user['men']} #⃣ `{user['_id']}`\n"
     out_str += "\n**NORMAL SUDO USERS**: [{}]\n\n"
     total = 0
     async for user in SUDO_USERS_COLLECTION.find():
         total += 1
         out_str += f" 👤 {user['men']} #⃣ `{user['_id']}`\n"
-    await message.edit(out_str.format(tr_total, total), del_in=0)
+    await message.edit(out_str.format(tr_total, dis_total, total), del_in=0)
 
 
 @userge.on_cmd(
@@ -256,6 +279,11 @@ async def add_sudo_cmd(message: Message):
         "fbanp",
         "fbanm",
         "unfban",
+        "reply",
+        "leave",
+        "distsudo",
+        "entsudo",
+        "tsudo",
     ]
     if "-all" in message.flags:
         await SUDO_CMDS_COLLECTION.drop()

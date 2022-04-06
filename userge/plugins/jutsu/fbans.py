@@ -61,6 +61,44 @@ async def fban_sudo_tags(message: Message):
     )
 
 
+async def _init() -> None:
+    found = await SAVED_SETTINGS.find_one({"_id": "F_ADEL"})
+    if found:
+        Config.F_ADEL = found["switch"]
+    else:
+        Config.F_ADEL = False
+
+
+@userge.on_cmd(
+    "f_adel",
+    about={
+        "header": "toggle auto delete Fban confirmation",
+        "flags": {
+            "-c": "check",
+        },
+        "usage": "{tr}f_adel",
+    },
+)
+async def f_adel(message: Message):
+    if "-c" in message.flags:
+        out_ = "ON" if Config.F_ADEL else "OFF"
+        return await message.edit(
+            f"`Fban confirmation auto-delete : {out_}.`", del_in=5
+        )
+    if Config.F_ADEL:
+        Config.F_ADEL = False
+        await SAVED_SETTINGS.update_one(
+            {"_id": "F_ADEL"}, {"$set": {"switch": False}}, upsert=True
+        )
+    else:
+        Config.F_ADEL = True
+        await SAVED_SETTINGS.update_one(
+            {"_id": "F_ADEL"}, {"$set": {"switch": True}}, upsert=True
+        )
+    out_ = "ON" if Config.F_ADEL else "OFF"
+    await message.edit(f"`Fban confirmation auto-delete : {out_}.`")
+
+
 @userge.on_cmd(
     "addf",
     about={
@@ -134,6 +172,9 @@ async def delfed_(message: Message):
     about={
         "header": "Fban user",
         "description": "Fban the user from the list of fed",
+        "flags": {
+            "-d": "auto-delete message",
+        },
         "usage": "{tr}fban [username|reply to user|user_id] [reason (optional)]",
     },
     allow_bots=False,
@@ -270,7 +311,8 @@ async def fban_(message: Message):
     )
     if sudo_:
         msg_ += f"**By:** {message.from_user.mention}"
-    await message.edit(msg_)
+    del_ = 3 if "-d" in message.flags or Config.F_ADEL else -1
+    await message.edit(msg_, del_in=del_)
     await userge.send_message(int(PROOF_CHANNEL), msg_)
 
 
@@ -282,6 +324,7 @@ async def fban_(message: Message):
         "\nWARNING: don't use if any of the fed group has links blocklisted",
         "flags": {
             "-r": "remote fban, use with direct proof link",
+            "-d": "auto-delete message",
         },
         "usage": "{tr}fbanp [direct reply to spammer] {reason}\n{tr}fbanp [reply to proof forwarded by you] {user id} {reason}",
     },
@@ -479,7 +522,8 @@ async def fban_p(message: Message):
     )
     if sudo_:
         msg_ += f"**By:** {message.from_user.mention}"
-    await message.edit(msg_, disable_web_page_preview=True)
+    del_ = 3 if "-d" in message.flags or Config.F_ADEL else -1
+    await message.edit(msg_, del_in=del_, disable_web_page_preview=True)
     await userge.send_message(
         int(FBAN_LOG_CHANNEL), msg_, disable_web_page_preview=True
     )
@@ -569,7 +613,10 @@ async def unfban_(message: Message):
     if message.reply_to_message:
         reason = input
     else:
-        reason = input.split(" ", 1)[1]
+        try:
+            reason = input.split(" ", 1)[1]
+        except BaseException:
+            reason = "not specified, maybe they solved it out"
     PROOF_CHANNEL = FBAN_LOG_CHANNEL if FBAN_LOG_CHANNEL else Config.LOG_CHANNEL_ID
     error_msg = "Provide a User ID or reply to a User"
     if user is None:

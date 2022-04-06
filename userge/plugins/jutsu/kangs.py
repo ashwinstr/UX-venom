@@ -19,15 +19,58 @@ from pyrogram.errors import StickersetInvalid, YouBlockedUser
 from pyrogram.raw.functions.messages import GetStickerSet
 from pyrogram.raw.types import InputStickerSetShortName
 
-from userge import Config, Message, userge
+from userge import Config, Message, get_collection, userge
+from userge.helpers import Media_Info
 from userge.utils import get_response, runcmd
+
+SAVED_SETTINGS = get_collection("CONFIGS")
+
+
+async def _init() -> None:
+    found = await SAVED_SETTINGS.find_one({"_id": "LOG_KANG"})
+    if found:
+        Config.LOG_KANG = found["switch"]
+    else:
+        Config.LOG_KANG = True
+
+
+@userge.on_cmd(
+    "log_kang",
+    about={
+        "header": "toggle 'kang in log channel' switch",
+        "flags": {
+            "-c": "check",
+        },
+        "usage": "{tr}log_kang",
+    },
+)
+async def log_kang(message: Message):
+    if "-c" in message.flags:
+        out_ = "ON" if Config.LOG_KANG else "OFF"
+        return await message.edit(f"`Logging kang in channel is {out_}.", del_in=5)
+    if Config.LOG_KANG:
+        Config.LOG_KANG = False
+        await SAVED_SETTINGS.update_one(
+            {"_id": "LOG_KANG"}, {"$set": {"switch": False}}, upsert=True
+        )
+    else:
+        Config.LOG_KANG = True
+        await SAVED_SETTINGS.update_one(
+            {"_id": "LOG_KANG"}, {"$set": {"switch": True}}, upsert=True
+        )
+    out_ = "ON" if Config.LOG_KANG else "OFF"
+    await message.edit(f"`Logging kang in channel is now {out_}.`")
 
 
 @userge.on_cmd(
     "kang",
     about={
         "header": "kangs stickers or creates new ones",
-        "flags": {"-s": "without link", "-d": "without trace"},
+        "flags": {
+            "-s": "without link",
+            "-d": "without trace",
+            "-f": "fast-forward video stickers to fit in 3 seconds",
+        },
         "usage": "Reply {tr}kang [emoji('s)] [pack number] to a sticker or "
         "an image to kang it to your userbot pack.",
         "examples": [
@@ -46,38 +89,58 @@ async def kang_(message: Message):
     """kang a sticker"""
     user = await userge.get_me()
     replied = message.reply_to_message
-    await message.edit("`Kanging in log channel...`", del_in=1)
-    kang_msg = await userge.send_message(Config.LOG_CHANNEL_ID, "`Processing...`")
+    if Config.LOG_KANG:
+        await message.edit("`Kanging in log channel...`", del_in=1)
+        kang_msg = await userge.send_message(Config.LOG_CHANNEL_ID, "`Processing...`")
+    else:
+        kang_msg = await message.edit("`Processing...`")
     media_ = None
     emoji_ = None
     is_anim = False
     is_video = False
     resize = False
+    ff_vid = False
     if replied and replied.media:
         if replied.photo:
             resize = True
         elif replied.document and "image" in replied.document.mime_type:
             resize = True
+            replied.document.file_name
         elif replied.document and "tgsticker" in replied.document.mime_type:
             is_anim = True
-        elif (
-            replied.document and "video" in replied.document.mime_type
-        ):
+            replied.document.file_name
+        elif replied.document and "video" in replied.document.mime_type:
             resize = True
             is_video = True
+            ff_vid = True if "-f" in message.flags else False
+        elif replied.animation:
+            resize = True
+            is_video = True
+            ff_vid = True if "-f" in message.flags else False
+        elif replied.video:
+            resize = True
+            is_video = True
+            ff_vid = True if "-f" in message.flags else False
         elif replied.sticker:
             if not replied.sticker.file_name:
                 await kang_msg.edit("`Sticker has no Name!`")
                 return
             emoji_ = replied.sticker.emoji
             is_anim = replied.sticker.is_animated
-            if not replied.sticker.file_name.endswith(".tgs"):
+            is_video = replied.sticker.is_video
+            if not (
+                replied.sticker.file_name.endswith(".tgs")
+                or replied.sticker.file_name.endswith(".webm")
+            ):
                 resize = True
+                ff_vid = True if "-f" in message.flags else False
         else:
             await kang_msg.edit("`Unsupported File!`")
             return
         await kang_msg.edit(f"`{random.choice(KANGING_STR)}`")
-        media_ = await userge.download_media(message=replied, file_name=Config.DOWN_PATH)
+        media_ = await userge.download_media(
+            message=replied, file_name=f"{Config.DOWN_PATH}"
+        )
     else:
         await kang_msg.edit("`I can't kang that...`")
         return
@@ -106,7 +169,7 @@ async def kang_(message: Message):
         packnick = f"{custom_packnick} vol.{pack}"
         cmd = "/newpack"
         if resize:
-            media_ = await resize_photo(media_, is_video)
+            media_ = await resize_photo(media_, is_video, ff_vid)
         if is_anim:
             packname += "_anim"
             packnick += " (Animated)"
@@ -114,7 +177,7 @@ async def kang_(message: Message):
         if is_video:
             packname += "_video"
             packnick += " (Video)"
-            cmd = '/newvideo'
+            cmd = "/newvideo"
         exist = False
         try:
             exist = await message.client.send(
@@ -179,7 +242,10 @@ async def kang_(message: Message):
                             f"**Sticker** {out} __in a Different Pack__**!**"
                         )
                         return
-                await conv.send_document(media_)
+                try:
+                    await conv.send_document(media_)
+                except BaseException:
+                    await userge.send_message(Config.LOG_CHANNEL_ID, media_)
                 rsp = await conv.get_response(mark_read=True)
                 if "Sorry, the file type is invalid." in rsp.text:
                     await kang_msg.edit(
@@ -271,19 +337,45 @@ async def sticker_pack_info_(message: Message):
     await message.edit(out_str)
 
 
-async def resize_photo(media: str, video: bool) -> str:
+async def resize_photo(media: str, video: bool, fast_forward: bool) -> str:
     """Resize the given photo to 512x512"""
     if video:
+        info_ = Media_Info.data(media)
+        width = info_["pixel_sizes"][0]
+        height = info_["pixel_sizes"][1]
+        sec = info_["duration_in_ms"]
+        s = round(float(sec)) / 1000
+
+        if height == width:
+            height, width = 512, 512
+        elif height > width:
+            height, width = 512, -1
+        elif width > height:
+            height, width = -1, 512
+
         resized_video = f"{media}.webm"
-        cmd = f"ffmpeg -i {media} -ss 00:00:00 -to 00:00:03 -map 0:v" + \
-            f" -c:v libvpx-vp9 -vf scale=512:512,fps=fps=30 {resized_video}"
+        if fast_forward:
+            if s > 3:
+                fract_ = 3 / s
+                ff_f = round(fract_, 2)
+                set_pts_ = ff_f - 0.01 if ff_f > fract_ else ff_f
+                cmd_f = f"-filter:v 'setpts={set_pts_}*PTS',scale={width}:{height}"
+            else:
+                cmd_f = f"-filter:v scale={width}:{height}"
+        else:
+            cmd_f = f"-filter:v scale={width}:{height}"
+        fps_ = float(info_["frame_rate"])
+        fps_cmd = "-r 30 " if fps_ > 30 else ""
+        cmd = f"ffmpeg -i {media} {cmd_f} -ss 00:00:00 -to 00:00:03 -an -c:v libvpx-vp9 {fps_cmd}-fs 256K {resized_video}"
         await runcmd(cmd)
         os.remove(media)
         return resized_video
+
     image = Image.open(media)
     maxsize = 512
     scale = maxsize / max(image.width, image.height)
     new_size = (int(image.width * scale), int(image.height * scale))
+
     image = image.resize(new_size, Image.LANCZOS)
     resized_photo = io.BytesIO()
     resized_photo.name = "sticker.png"

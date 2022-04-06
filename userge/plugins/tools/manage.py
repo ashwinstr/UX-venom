@@ -8,9 +8,11 @@
 #
 # All rights reserved.
 
+import asyncio
 import os
 
 from userge import Config, Message, userge
+from userge.helpers import Start
 from userge.plugins import ROOT
 from userge.utils import get_import_path
 
@@ -365,25 +367,36 @@ async def load(message: Message) -> None:
         await message.edit(out_str, del_in=0, log=__name__)
     else:
         await message.edit("`Loading...`")
+        restart_ = False
         replied = message.reply_to_message
         if replied and replied.document:
             file_ = replied.document
-            if file_.file_name.endswith(".py") and file_.file_size < 2 ** 20:
+            if file_.file_name.endswith(".py") and file_.file_size < 2**20:
                 if not os.path.isdir(Config.TMP_PATH):
                     os.makedirs(Config.TMP_PATH)
                 t_path = os.path.join(Config.TMP_PATH, file_.file_name)
                 if os.path.isfile(t_path):
                     os.remove(t_path)
+                    restart_ = True
                 await replied.download(file_name=t_path)
                 plugin = get_import_path(ROOT, t_path)
                 try:
                     await userge.load_plugin(plugin, reload_plugin=True)
                     await userge.finalize_load()
                 except (ImportError, SyntaxError, NameError) as i_e:
-                    os.remove(t_path)
                     await message.err(i_e)
                 else:
-                    await message.edit(f"`Loaded {plugin}`", del_in=3, log=__name__)
+                    out_ = f"`Loaded {plugin} `"
+                    del_in_ = 3
+                    if restart_:
+                        out_ += "`and now restarting...`"
+                        del_in_ = -1
+                    end_msg = await message.edit(out_, del_in=del_in_, log=__name__)
+                    if restart_:
+                        await Start.save_msg(
+                            end_msg, f"`Plugin {plugin} loaded successfully...`"
+                        )
+                        asyncio.get_event_loop().create_task(userge.restart())
             else:
                 await message.edit("`Plugin Not Found`")
         else:

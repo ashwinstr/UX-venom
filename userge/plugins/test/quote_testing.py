@@ -3,13 +3,13 @@
 
 import io
 import os
-import requests
-
 from textwrap import wrap
+
+import requests
 from PIL import Image, ImageDraw, ImageFont
 
-from userge import userge, Message
-from userge.helpers import msg_type, get_profile_pic
+from userge import Message, userge
+from userge.helpers import get_profile_pic, msg_type
 from userge.utils import media_to_image
 
 CHANNEL = userge.getCLogger(__name__)
@@ -37,7 +37,9 @@ async def q_pic(message: Message):
     input_ = message.filtered_input_str
     reply_ = message.reply_to_message
     if not input_ and not reply_:
-        return await message.edit("`Either reply to message or provide input...`", del_in=5)
+        return await message.edit(
+            "`Either reply to message or provide input...`", del_in=5
+        )
     elif input_:
         input_str = input_.strip()
     else:
@@ -119,39 +121,3 @@ async def q_pic(message: Message):
     for i in [pfp_]:
         if os.path.lexists(i):
             os.remove(i)
-
-
-@userge.on_cmd(
-    "q_n",
-    about={
-        "header": "Makes your message as sticker quote.",
-        "usage": "{tr}q [reply to message]",
-    },
-)
-async def sticker_chat(message: Message):
-    "Makes your message as sticker quote"
-    reply_ = message.reply_to_message
-    if not reply_:
-        return await message.edit(
-            "`Reply to a message to quote...`", del_in=5
-        )
-    fetchmsg = reply_.text
-    repliedreply = None
-    mediatype = msg_type(reply_)
-    if mediatype and mediatype in ["photo", "video", "gif"]:
-        return await message.edit("`Replied message is not supported...`", del_in=5)
-    msg_ = await message.edit("`Making quote...`")
-    user_ = (
-        await userge.get_user(reply_.forward_from.from_user.id)
-        if reply_.forward_from
-        else reply_.from_user.id
-    )
-    res, catmsg = await process(fetchmsg, user, catquotes.client, reply, repliedreply)
-    if not res:
-        return
-    outfi = os.path.join("./temp", "sticker.png")
-    catmsg.save(outfi)
-    endfi = convert_tosticker(outfi)
-    await catquotes.client.send_file(catquotes.chat_id, endfi, reply_to=reply)
-    await catevent.delete()
-    os.remove(endfi)

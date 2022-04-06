@@ -109,6 +109,12 @@ class Message(RawMessage):
         return self._flags
 
     @property
+    def replied(self):
+        """ Return reply_to_message"""
+        _replied = self.reply_to_message
+        return _replied
+
+    @property
     def process_is_canceled(self) -> bool:
         """ Returns True if process canceled """
         if self.message_id in _CANCEL_LIST:
@@ -166,19 +172,46 @@ class Message(RawMessage):
         prefix = str(self._kwargs.get('prefix', '-'))
         del_pre = bool(self._kwargs.get('del_pre', False))
         input_str = self.input_str
-        for i in input_str.strip().split():
-            match = re.match(f"({prefix}[a-zA-Z]+)([0-9]*)$", i)
-            if match:
-                items: Sequence[str] = match.groups()
-                self._flags[items[0].lstrip(prefix).lower() if del_pre
-                            else items[0].lower()] = items[1] or ''
-            else:
-                self._filtered_input_str += ' ' + i
+        for n in input_str.strip().splitlines():
+            line_ = ""
+            for i in n.split(' '):
+                match = re.match(f"({prefix}[a-zA-Z]+)([0-9]*)$", i)
+                if match:
+                    items: Sequence[str] = match.groups()
+                    self._flags[items[0].lstrip(prefix).lower() if del_pre
+                                else items[0].lower()] = items[1] or ''
+                else:
+                    line_ += i + ' '
+            self._filtered_input_str += "\n" + line_
         self._filtered_input_str = self._filtered_input_str.strip()
         _LOG.debug(
             _LOG_STR,
             f"Filtered Input String => [ {self._filtered_input_str}, {self._flags} ]")
         self._filtered = True
+
+    # credits to Uniborg for this idea
+    async def copy_protected_content(self,
+                                     chat_id: Union[int, str] = "me",
+                                     reply_to_message_id: Optional[int] = None) -> 'Message':
+        """\nYou can download and send any type of message protected content with this attribute
+        
+        Example:
+                message.copy_protected_content(chat_id="UX_xplugin_support")
+        Parameters:
+            chat_id (``str`` | ``int``):
+                username or id of target group/channel.
+        
+        Returns:
+            On success, the sent Message is returned.
+        """
+        msg_link = self.link
+        split_link = msg_link.split("/")
+        c_id = split_link[-2]
+        m_id = split_link[-1]
+        if c_id.isdigit() and len(c_id) == 10:
+            c_id = int("-100" + c_id)
+        protected_content = await self._client.get_messages(c_id, int(m_id))
+        return await protected_content.copy(chat_id, reply_to_message_id=reply_to_message_id)
 
     async def send_as_file(self,
                            text: str,
