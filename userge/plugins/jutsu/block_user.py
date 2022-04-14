@@ -12,6 +12,7 @@ from userge import userge, Config, Message, get_collection
 
 BLOCKED_USERS = get_collection("BLOCKED_USERS")
 LOG_ = userge.getLogger(__name__)
+CHANNEL = userge.getCLogger(__name__)
 
 
 async def _init() -> None:
@@ -129,14 +130,14 @@ async def unblock_ing(message: Message):
 
 @userge.on_raw_update(group=3)
 async def manual_block_unblock(_, update: Update, users: User, chats: Chat):
-    if update.QUALNAME == 'types.UpdatePeerBlocked':
+    if isinstance(update, UpdatePeerBlocked):
         user_ = update.peer_id.user_id
         if update.blocked == True:
             Config.BLOCKED_USERS.append(user_)
-            LOG_.error(f"User {user_} blocked !!!")
+            await CHANNEL.log(f"User <b>{user_}</b> blocked !!!")
         elif update.blocked == False:
             Config.BLOCKED_USERS.remove(user_)
-            LOG_.error(f"User {user_} unblocked !!!")
+            await CHANNEL.log(f"User <b>{user_}</b> unblocked !!!")
         else:
             pass
 
