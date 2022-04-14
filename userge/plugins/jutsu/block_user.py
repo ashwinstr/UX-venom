@@ -127,7 +127,7 @@ async def unblock_ing(message: Message):
 
 # i'm noob with raw updates, any suggestion to improve the code is welcome
 
-@userge.on_raw_update()
+@userge.on_raw_update(group=3)
 async def manual_block_unblock(_, update: Update, users: User, chats: Chat):
     if update.QUALNAME == 'types.UpdatePeerBlocked':
         user_ = update.peer_id.user_id
