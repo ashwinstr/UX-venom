@@ -11,6 +11,7 @@ from userge import userge, Config, Message, get_collection
 
 
 BLOCKED_USERS = get_collection("BLOCKED_USERS")
+LOG_ = userge.getLogger(__name__)
 
 
 async def _init() -> None:
@@ -132,8 +133,10 @@ async def manual_block_unblock(_, update: Update, users: User, chats: Chat):
         user_ = update.peer_id.user_id
         if update.blocked == True:
             Config.BLOCKED_USERS.append(user_)
+            LOG_.log(1, f"User {user_} blocked !!!")
         elif update.blocked == False:
             Config.BLOCKED_USERS.remove(user_)
+            LOG_.log(1, f"User {user_} unblocked !!!")
         else:
             pass
 
