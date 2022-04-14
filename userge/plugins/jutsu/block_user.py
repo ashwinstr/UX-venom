@@ -128,7 +128,7 @@ async def unblock_ing(message: Message):
 
 @userge.on_raw_update()
 async def manual_block_unblock(_, update: Update, users: User, chats: Chat):
-    if update is UpdatePeerBlocked:
+    if update.QUALNAME == 'types.UpdatePeerBlocked':
         user_ = update.peer_id.user_id
         if update.blocked == True:
             Config.BLOCKED_USERS.append(user_)
