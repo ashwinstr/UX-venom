@@ -155,7 +155,7 @@ async def manual_block_unblock(_, update: Update, users: User, chats: Chat):
     allow_channels=False,
 )
 async def v_block_ed(message: Message):
-    await message.editt("`Fetching blocked user list...`")
+    await message.edit("`Fetching blocked user list...`")
     auto_blocked = "<b>Users blocked by userbot:</b> [{}]\n\n"
     auto_ = 0
     manual_blocked = "<b>Users blocked manually:</b> [{}]\n\n"
