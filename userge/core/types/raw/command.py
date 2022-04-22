@@ -21,11 +21,6 @@ from userge import Config
 from .filter import Filter
 from ... import client as _client  # pylint: disable=unused-import
 
-def no_reaction_filter(_, __, m: Message) -> bool:
-    "testing"
-    if m.reactions and len(m.reactions) != 0:
-        return False
-    return True
 
 class Command(Filter):
     """ command class """
