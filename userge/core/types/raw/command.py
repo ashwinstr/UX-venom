@@ -15,14 +15,15 @@ import re
 from typing import Union, Dict, List
 
 from pyrogram import filters
+from pyrogram.types import Message
 
 from userge import Config
 from .filter import Filter
 from ... import client as _client  # pylint: disable=unused-import
 
-def no_reaction_filter(_, __, m):
+def no_reaction_filter(_, __, m: Message) -> bool:
     "testing"
-    if m.reactions:
+    if len(m.reactions) != 0:
         return False
     return True
 
