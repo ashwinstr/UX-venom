@@ -21,7 +21,7 @@ from userge import Config
 from .filter import Filter
 from ... import client as _client  # pylint: disable=unused-import
 
-def no_reaction_filter(m: Message) -> bool:
+def no_reaction_filter(_, __, m: Message) -> bool:
     "testing"
     if m.reactions and len(m.reactions) != 0:
         return False
@@ -78,8 +78,7 @@ class Command(Filter):
                          or (Config.SUDO_ENABLED and (m.from_user.id in Config.TRUSTED_SUDO_USERS)))
                 and m.text.startswith(Config.SUDO_TRIGGER))
             no_react_flt = filters.create(
-                lambda _, __, m:
-                no_reaction_filter(m)
+                no_reaction_filter
             )
             filters_ = filters_ & (outgoing_flt | incoming_flt) & no_react_flt
         return cls(_format_about(about), trigger, pattern, filters=filters_, name=cname, **kwargs)
