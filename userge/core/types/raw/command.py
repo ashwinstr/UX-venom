@@ -23,7 +23,7 @@ from ... import client as _client  # pylint: disable=unused-import
 
 def no_reaction_filter(_, __, m: Message) -> bool:
     "testing"
-    if len(m.reactions) != 0:
+    if m.reactions:
         return False
     return True
 
