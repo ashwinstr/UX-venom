@@ -78,7 +78,8 @@ class Command(Filter):
                          or (Config.SUDO_ENABLED and (m.from_user.id in Config.TRUSTED_SUDO_USERS)))
                 and m.text.startswith(Config.SUDO_TRIGGER))
             no_react_flt = filters.create(
-                no_reaction_filter
+                lambda _, __, m:
+                m.reactions is None
             )
             filters_ = filters_ & (outgoing_flt | incoming_flt) & no_react_flt
         return cls(_format_about(about), trigger, pattern, filters=filters_, name=cname, **kwargs)
