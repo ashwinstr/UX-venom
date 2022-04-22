@@ -20,6 +20,11 @@ from userge import Config
 from .filter import Filter
 from ... import client as _client  # pylint: disable=unused-import
 
+def no_reaction_filter(_, __, m):
+    "testing"
+    if m.reactions:
+        return False
+    return True
 
 class Command(Filter):
     """ command class """
@@ -71,11 +76,6 @@ class Command(Filter):
                          and (cname.lstrip(trigger) in Config.ALLOWED_COMMANDS))
                          or (Config.SUDO_ENABLED and (m.from_user.id in Config.TRUSTED_SUDO_USERS)))
                 and m.text.startswith(Config.SUDO_TRIGGER))
-            def no_reaction_filter(_, __, m):
-                "testing"
-                if m.reactions:
-                    return False
-                return True
             filters_ = filters_ & (outgoing_flt | incoming_flt) & filters.create(no_reaction_filter)
         return cls(_format_about(about), trigger, pattern, filters=filters_, name=cname, **kwargs)
 
