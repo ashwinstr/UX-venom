@@ -77,7 +77,11 @@ class Command(Filter):
                          and (cname.lstrip(trigger) in Config.ALLOWED_COMMANDS))
                          or (Config.SUDO_ENABLED and (m.from_user.id in Config.TRUSTED_SUDO_USERS)))
                 and m.text.startswith(Config.SUDO_TRIGGER))
-            filters_ = filters_ & (outgoing_flt | incoming_flt) & filters.create(no_reaction_filter)
+            no_react_flt = filters.create(
+                lambda _, __, m:
+                no_reaction_filter()
+            )
+            filters_ = filters_ & (outgoing_flt | incoming_flt) & no_react_flt
         return cls(_format_about(about), trigger, pattern, filters=filters_, name=cname, **kwargs)
 
     def __repr__(self) -> str:
