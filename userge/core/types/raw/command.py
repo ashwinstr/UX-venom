@@ -23,9 +23,9 @@ from ... import client as _client  # pylint: disable=unused-import
 
 def no_reaction_filter(m: Message) -> bool:
     "testing"
-    if len(m.reactions) != 0:
-        return True
-    return False
+    if m.reactions and len(m.reactions) != 0:
+        return False
+    return True
 
 class Command(Filter):
     """ command class """
