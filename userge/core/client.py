@@ -127,8 +127,6 @@ class Userge(_AbstractUserge):
         _LOG.info(_LOG_STR, "Setting USERGE-X Configs")
         kwargs = {
             'name': 'USERGE_X_JUTSU',
-            'api_id': Config.API_ID,
-            'api_hash': Config.API_HASH,
             'workers': Config.WORKERS
         }
         if Config.BOT_TOKEN:
