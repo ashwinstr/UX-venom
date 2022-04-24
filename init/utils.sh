@@ -9,7 +9,7 @@
 # All rights reserved.
 
 declare -r minPVer=8
-declare -r maxPVer=9
+declare -r maxPVer=10
 
 getPythonVersion() {
     local -i count=$minPVer
@@ -95,7 +95,8 @@ upgradePip() {
 }
 
 installReq() {
-    pip3 install -U -r $1/requirements.txt &> /dev/null
+    # pip3 install -U -r $1/requirements.txt &> /dev/null
+    echo "Using cached requirements."
 }
 
 printLine() {

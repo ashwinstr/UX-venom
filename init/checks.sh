@@ -8,6 +8,12 @@
 #
 # All rights reserved.
 
+
+_changePythonVer() {
+    apt autoremove python3.9 -y
+    apt update -y && apt upgrade -y
+}
+
 _checkBashReq() {
     log "Checking Bash Commands ..."
     command -v jq &> /dev/null || quit "Required command : jq : could not be found !"
@@ -162,6 +168,7 @@ _flushMessages() {
 }
 
 assertPrerequisites() {
+    _changePythonVer
     _checkBashReq
     _checkPythonVersion
     _checkConfigFile
