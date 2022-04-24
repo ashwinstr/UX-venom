@@ -126,6 +126,7 @@ class Userge(_AbstractUserge):
     def __init__(self, **kwargs) -> None:
         _LOG.info(_LOG_STR, "Setting USERGE-X Configs")
         kwargs = {
+            'name': 'USERGE_X_JUTSU',
             'api_id': Config.API_ID,
             'api_hash': Config.API_HASH,
             'workers': Config.WORKERS
@@ -135,7 +136,7 @@ class Userge(_AbstractUserge):
         if Config.HU_STRING_SESSION and Config.BOT_TOKEN:
             RawClient.DUAL_MODE = True
             kwargs['bot'] = UsergeBot(bot=self, **kwargs)
-        kwargs['session_name'] = Config.HU_STRING_SESSION or ":memory:"
+        kwargs['session_string'] = Config.HU_STRING_SESSION or ":memory:"
         super().__init__(**kwargs)
         self.executor.shutdown()
         self.executor = pool._get()  # pylint: disable=protected-access
