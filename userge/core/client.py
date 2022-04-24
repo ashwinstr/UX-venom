@@ -110,7 +110,8 @@ class UsergeBot(_AbstractUserge):
     """ USERGE-X Bot """
     def __init__(self, **kwargs) -> None:
         _LOG.info(_LOG_STR, "Setting X-BOT Configs")
-        super().__init__(session_string="in_memory=True", **kwargs)
+        string_ = Config.HU_STRING_SESSION or 'in_memory=True'
+        super().__init__(session_string=string_, **kwargs)
 
     @property
     def ubot(self) -> 'Userge':
