@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-import stagger
+# import stagger
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from PIL import Image
