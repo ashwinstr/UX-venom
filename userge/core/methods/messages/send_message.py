@@ -17,6 +17,7 @@ from typing import Optional, Union, List
 from pyrogram.types import (
     InlineKeyboardMarkup, ReplyKeyboardMarkup,
     ReplyKeyboardRemove, ForceReply, MessageEntity)
+from pyrogram.enums import ParseMode
 
 from userge import Config
 from userge.utils import secure_text
@@ -30,7 +31,7 @@ class SendMessage(RawClient):  # pylint: disable=missing-class-docstring
                            text: str,
                            del_in: int = -1,
                            log: Union[bool, str] = False,
-                           parse_mode: Union[str, object] = object,
+                           parse_mode: Union[str, ParseMode] = ParseMode,
                            entities: List[MessageEntity] = None,
                            disable_web_page_preview: Optional[bool] = None,
                            disable_notification: Optional[bool] = None,
