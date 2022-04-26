@@ -174,7 +174,7 @@ async def view_flood_settings(msg: Message):
 
 
 @userge.on_filters(
-    filters.group & filters.incoming & ~filters.edited,
+    filters.group & filters.incoming,
     group=3,
     check_restrict_perm=True,
 )

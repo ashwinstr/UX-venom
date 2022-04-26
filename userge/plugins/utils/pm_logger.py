@@ -63,7 +63,6 @@ async def pm_logger_(message: Message):
     & ~filters.user(Config.TG_IDS)
     & ~filters.service
     & ~filters.bot
-    & ~filters.edited
     & ~allowAllFilter
     & allowPmLoggingFilter,
     group=2,
