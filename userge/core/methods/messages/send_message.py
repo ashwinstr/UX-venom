@@ -31,7 +31,7 @@ class SendMessage(RawClient):  # pylint: disable=missing-class-docstring
                            text: str,
                            del_in: int = -1,
                            log: Union[bool, str] = False,
-                           parse_mode: Union[str, ParseMode] = ParseMode,
+                           parse_mode: Union[str, ParseMode] = ParseMode.DEFAULT,
                            entities: List[MessageEntity] = None,
                            disable_web_page_preview: Optional[bool] = None,
                            disable_notification: Optional[bool] = None,
