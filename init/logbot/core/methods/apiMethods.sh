@@ -29,7 +29,7 @@ api.sendMessage() {
 api.editMessageText() {
     local params=(
         chat_id=$1
-        id=$2
+        message_id=$2
         text=$(urlEncode "$3")
         parse_mode=HTML
     )
@@ -40,7 +40,7 @@ api.editMessageText() {
 api.deleteMessage() {
     local params=(
         chat_id=$1
-        id=$2
+        message_id=$2
     )
     unset _allMessages[$3]
     _getResponse $FUNCNAME ${params[*]}
