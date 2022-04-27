@@ -40,12 +40,10 @@ _getResponse() {
         else
             local errcode=$(echo $rawUpdate | jq .error_code)
             local desc=$(echo $rawUpdate | jq .description)
-            local jq_=$(jq)
+            echo $rawUpdate
             quit "invalid request ! (caused by core.api.$FUNCNAME)
 \terror_code : [$errcode]
-\tdescription : $desc
-
-\tJQ : $jq_"
+\tdescription : $desc"
         fi
         sleep 0.6
     fi
