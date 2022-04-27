@@ -28,7 +28,7 @@ _Message.chat_id() {
 }
 
 _Message.id() {
-    test "$1" = "=" && _Message.property message_id = $2 || _Message.property message_id
+    test "$1" = "=" && _Message.property id = $2 || _Message.property id
 }
 
 _Message.text() {
