@@ -6,6 +6,7 @@ from pyrogram.types import User, Chat
 from pyrogram.raw.types import UpdatePeerBlocked
 from pyrogram.raw.base.update import Update
 from pyrogram.errors import PeerIdInvalid, UsernameInvalid, UsernameNotOccupied
+from pyrogram.enums import ChatType
 
 from userge import userge, Config, Message, get_collection
 
@@ -32,7 +33,7 @@ async def block_ing(message: Message):
     input_ = message.input_str
     if not input_:
         return await message.edit("`Provide a reason to block the user.`", del_in=5)
-    if message.chat.type == "private":
+    if message.chat.type == ChatType.PRIVATE:
         user_ = message.chat.id
         reason_ = input_
     else:

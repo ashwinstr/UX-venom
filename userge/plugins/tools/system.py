@@ -17,6 +17,7 @@ import time
 
 from dotenv import get_key, load_dotenv, set_key, unset_key
 from pyrogram.types import User
+from pyrogram.enums import ChatType
 
 from userge import Config, Message, get_collection, userge
 from userge.core.ext import RawClient
@@ -319,7 +320,7 @@ async def enable_userbot(message: Message):
             await message.edit("This chat is already enabled!")
         else:
             Config.DISABLED_CHATS.remove(chat.id)
-            if chat.type == "private":
+            if chat.type == ChatType.PRIVATE:
                 c_name = " ".join([chat.first_name, chat.last_name or ""])
             else:
                 c_name = chat.title
@@ -368,7 +369,7 @@ async def disable_userbot(message: Message):
         elif chat.id == Config.LOG_CHANNEL_ID:
             await message.err("Can't disabled log channel")
         else:
-            if chat.type == "private":
+            if chat.type == ChatType.PRIVATE:
                 c_name = " ".join([chat.first_name, chat.last_name or ""])
             else:
                 c_name = chat.title

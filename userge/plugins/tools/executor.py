@@ -16,6 +16,8 @@ import traceback
 from getpass import getuser
 from os import geteuid
 
+from pyrogram.enums import ChatType
+
 from userge import Config, Message, userge
 from userge.utils import runcmd
 
@@ -88,7 +90,7 @@ async def eval_(message: Message):
         output += f"**>** ```{cmd}```\n\n"
     if evaluation is not None:
         output += f"**>>** ```{evaluation}```"
-    if (exc or stderr) and message.chat.type in ("group", "supergroup", "channel"):
+    if (exc or stderr) and message.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP, ChatType.CHANNEL):
         msg_id = await CHANNEL.log(output)
         await message.edit(f"**Logs**: {CHANNEL.get_link(msg_id)}")
     elif output:

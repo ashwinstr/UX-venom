@@ -17,6 +17,7 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     User,
 )
+from pyrogram.enums import ChatType
 
 from userge import Config, Message, get_collection, pool, userge
 from userge.utils import check_owner, get_file_id
@@ -67,7 +68,7 @@ if userge.has_bot:
             pattern = comp_regex(f"(?i)^/start({username})?([\s]+)?$")
             m.matches = (list(pattern.finditer(text)) if text else None) or None
             return bool(
-                (m.chat and m.chat.type == "private") and m.matches and not m.edit_date
+                (m.chat and m.chat.type == ChatType.PRIVATE) and m.matches and not m.edit_date
             )
 
         return filters.create(func, "StartFilter")

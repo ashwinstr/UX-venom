@@ -4,6 +4,8 @@ import asyncio
 import time
 from random import choice, randint
 
+from pyrogram.enums import ChatType
+
 from userge import Config, Message, filters, get_collection, userge
 from userge.utils import time_formatter
 
@@ -94,7 +96,7 @@ async def handle_afk_incomming(message: Message) -> None:
             else:
                 out_str = choice(AFK_REASONS)
             coro_list.append(message.reply(out_str))
-        if chat.type == "private":
+        if chat.type == ChatType.PRIVATE:
             USERS[user_id][0] += 1
         else:
             USERS[user_id][1] += 1
@@ -107,11 +109,11 @@ async def handle_afk_incomming(message: Message) -> None:
         else:
             out_str = choice(AFK_REASONS)
         coro_list.append(message.reply(out_str))
-        if chat.type == "private":
+        if chat.type == ChatType.PRIVATE:
             USERS[user_id] = [1, 0, user_dict["mention"]]
         else:
             USERS[user_id] = [0, 1, user_dict["mention"]]
-    if chat.type == "private":
+    if chat.type == ChatType.PRIVATE:
         coro_list.append(
             CHANNEL.log(
                 f"#PRIVATE\n{user_dict['mention']} send you\n\n" f"{message.text}"

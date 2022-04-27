@@ -21,6 +21,7 @@ from pyrogram.raw.types import (
     InputPeerChat,
     InputPeerUser,
 )
+from pyrogram.enums import ChatType
 
 from userge import Message, userge
 from userge.utils import clean_obj
@@ -34,7 +35,7 @@ def check_vc_perm(func):
     @wraps(func)
     async def vc_perm(m: Message):
         if (
-            m.chat.type in ["group", "supergroup"]
+            m.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]
             and not (m.from_user.is_deleted or m.from_user.is_bot)
             and m.from_user.is_self
             and getattr(

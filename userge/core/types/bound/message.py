@@ -13,11 +13,13 @@ __all__ = ['Message']
 import re
 import asyncio
 from typing import List, Dict, Tuple, Union, Optional, Sequence
+from cachetools import Cache
 
 from pyrogram.types import InlineKeyboardMarkup, Message as RawMessage
 from pyrogram.errors.exceptions import MessageAuthorRequired, MessageTooLong
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified, MessageIdInvalid
 from pyrogram.errors.exceptions.forbidden_403 import MessageDeleteForbidden
+from pyrogram.enums import ChatType
 
 from userge import logging
 from ... import client as _client  # pylint: disable=unused-import
@@ -326,7 +328,7 @@ class Message(RawMessage):
             RPCError: In case of a Telegram RPC error.
         """
         if quote is None:
-            quote = self.chat.type != "private"
+            quote = self.chat.type != ChatType.PRIVATE
         if reply_to_message_id is None and quote:
             reply_to_message_id = self.id
         if log and isinstance(log, bool):

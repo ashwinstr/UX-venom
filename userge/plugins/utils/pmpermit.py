@@ -11,6 +11,8 @@
 import asyncio
 from typing import Dict
 
+from pyrogram.enums import ChatType
+
 from userge import Config, Message, filters, get_collection, userge
 from userge.helpers import full_name, msg_type
 from userge.utils import SafeDict
@@ -143,7 +145,7 @@ async def denyToPm(message: Message):
 
 async def get_id(message: Message):
     userid = None
-    if message.chat.type in ["private", "bot"]:
+    if message.chat.type in [ChatType.PRIVATE, ChatType.BOT]:
         userid = message.chat.id
     if message.reply_to_message:
         userid = message.reply_to_message.from_user.id

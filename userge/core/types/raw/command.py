@@ -15,7 +15,7 @@ import re
 from typing import Union, Dict, List
 
 from pyrogram import filters
-from pyrogram.types import Message
+from pyrogram.enums import ChatType
 
 from userge import Config
 from .filter import Filter
@@ -57,7 +57,7 @@ class Command(Filter):
                 and not (m.forward_from or m.forward_sender_name)
                 and not (m.from_user and m.from_user.is_bot)
                 and (m.outgoing or (m.from_user and m.from_user.is_self))
-                and not (m.chat and m.chat.type == "channel" and m.edit_date)
+                and not (m.chat and m.chat.type == ChatType.CHANNEL and m.edit_date)
                 and (m.text and m.text.startswith(trigger) if trigger else True))
             incoming_flt = filters.create(
                 lambda _, __, m:

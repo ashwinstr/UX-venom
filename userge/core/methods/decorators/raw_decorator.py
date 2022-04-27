@@ -21,6 +21,7 @@ from pyrogram import StopPropagation, ContinuePropagation
 from pyrogram.filters import Filter as RawFilter
 from pyrogram.types import Message as RawMessage, ChatMember
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
+from pyrogram.enums import ChatType
 
 from userge import logging, Config
 from ...ext import RawClient
@@ -113,7 +114,7 @@ async def _init(r_c: Union['_client.Userge', '_client.UsergeBot'],
 async def _raise_func(r_c: Union['_client.Userge', '_client.UsergeBot'],
                       r_m: RawMessage, text: str) -> None:
     # pylint: disable=protected-access
-    if r_m.chat.type in ("private", "bot"):
+    if r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT):
         await r_m.reply(f"< **ERROR**: {text} ! >")
     else:
         await r_c._channel.log(f"{text}\nCaused By: [link]({r_m.link})", "ERROR")
@@ -121,7 +122,7 @@ async def _raise_func(r_c: Union['_client.Userge', '_client.UsergeBot'],
 
 async def _is_admin(r_c: Union['_client.Userge', '_client.UsergeBot'],
                     r_m: RawMessage) -> bool:
-    if r_m.chat.type in ("private", "bot"):
+    if r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT):
         return False
     if round(time.time() - _TASK_1_START_TO) > 10:
         _clear_cht()
@@ -134,7 +135,7 @@ async def _is_admin(r_c: Union['_client.Userge', '_client.UsergeBot'],
 
 def _get_chat_member(r_c: Union['_client.Userge', '_client.UsergeBot'],
                      r_m: RawMessage) -> Optional[ChatMember]:
-    if r_m.chat.type in ("private", "bot"):
+    if r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT):
         return None
     if isinstance(r_c, _client.Userge):
         if r_m.chat.id in _U_AD_CHT:
@@ -236,7 +237,7 @@ class RawDecorator(RawClient):
                 if r_m.chat and r_m.chat.id in Config.DISABLED_CHATS:
                     return
                 await _init(r_c, r_m)
-                if r_m.chat.type == "supergroup":
+                if r_m.chat.type == ChatType.SUPERGROUP:
                     if ("­" in r_m.chat.title.lower()) and not await _is_admin(r_c, r_m):
                         return 
                 _raise = partial(_raise_func, r_c, r_m)
@@ -249,7 +250,7 @@ class RawDecorator(RawClient):
                         await _raise("`chat admin required`")
                     return
                 if r_m.chat and flt.check_perm:
-                    if not (r_m.chat.type in ("private", "bot") and flt.check_pin_perm):
+                    if not (r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT) and flt.check_pin_perm):
                         is_admin = await _is_admin(r_c, r_m)
                         c_m = _get_chat_member(r_c, r_m)
                         if not c_m:

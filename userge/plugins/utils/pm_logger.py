@@ -9,6 +9,7 @@ import asyncio
 
 from pyrogram import filters
 from pyrogram.errors import FloodWait, MessageIdInvalid
+from pyrogram.enums import ChatType
 
 from userge import Config, Message, get_collection, userge
 from userge.utils import mention_html
@@ -199,7 +200,7 @@ async def list_no_pm_log_users(message: Message):
 
 
 async def get_id(message: Message, userid=None):
-    if message.chat.type in ["private", "bot"]:
+    if message.chat.type in [ChatType.PRIVATE, ChatType.BOT]:
         userid = message.chat.id
     if message.reply_to_message:
         userid = message.reply_to_message.from_user.id

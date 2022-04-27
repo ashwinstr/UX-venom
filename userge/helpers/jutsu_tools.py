@@ -13,6 +13,8 @@ from pyrogram.raw.types import (
     InputReportReasonPornography,
     InputReportReasonSpam,
 )
+from pyrogram.enums import ChatType
+
 from userge import userge
 
 
@@ -164,7 +166,7 @@ async def admin_chats(user_id: int) -> dict:
         raise
         return
     async for dialog in userge.iter_dialogs():
-        if dialog.chat.type in ["group", "supergroup", "channel"]:
+        if dialog.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP, ChatType.CHANNEL]:
             try:
                 check = await admin_or_creator(dialog.chat.id, user_.id)
                 is_admin = check['is_admin']

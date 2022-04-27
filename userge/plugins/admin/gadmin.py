@@ -12,6 +12,7 @@ from pyrogram.errors import (
     UsernameInvalid,
 )
 from pyrogram.types import ChatPermissions
+from pyrogram.enums import ChatType
 
 from userge import Config, Message, userge
 from userge.utils.functions import get_emoji_regex
@@ -470,7 +471,7 @@ async def zombie_clean(message: Message):
     chat_ = message.filtered_input_str
     if not chat_:
         chat_ = message.chat.id
-        if message.chat.type == "private":
+        if message.chat.type == ChatType.PRIVATE:
             return await message.edit("`Chat can't be private...`", del_in=5)
     try:
         chat_ = await userge.get_chat(chat_)
@@ -622,7 +623,7 @@ async def pin_msgs(message: Message):
         )
         silent = False if ("-l" or "-both") in message.flags else True
         await message.edit(f"`Pinned Successfully!`\n<b>Silent:</b> {silent}")
-        if message.chat.type in ["group", "supergroup"]:
+        if message.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
             chat_id = message.chat.id
             await CHANNEL.log(f"#PIN\n\nCHAT: `{message.chat.title}` (`{chat_id}`)")
         else:
