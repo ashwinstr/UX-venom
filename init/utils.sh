@@ -96,7 +96,7 @@ upgradePip() {
 
 installReq() {
     # pip3 install -U -r $1/requirements.txt &> /dev/null
-    echo "Using cached requirements."
+    log "Using cached requirements."
 }
 
 printLine() {
