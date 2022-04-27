@@ -84,7 +84,7 @@ async def pm_logger(_, message: Message):
         PM_LOGGER_CACHE[u_id] = {
             "name": u_name,
             "msg_count": 1,
-            "logger_msg_id": logger_msg_count.message_id,
+            "logger_msg_id": logger_msg_count.id,
         }
     # either it can be the same user or a new user
     elif len(PM_LOGGER_CACHE) == 1:
@@ -117,7 +117,7 @@ async def pm_logger(_, message: Message):
             PM_LOGGER_CACHE[u_id] = {
                 "name": u_name,
                 "msg_count": 1,
-                "logger_msg_id": logger_msg_count.message_id,
+                "logger_msg_id": logger_msg_count.id,
             }
     else:  # Just in Case
         PM_LOGGER_CACHE.clear()

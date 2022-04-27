@@ -44,10 +44,10 @@ async def kang_bot(message: Message):
         return await message.edit("`Reply to sticker or image to kang...`", del_in=5)
     if not reply_.sticker:
         return await message.edit("`Reply to sticker or image to kang...`", del_in=5)
-    await userge.bot.copy_message(STICK_GROUP, message.chat.id, reply_.message_id)
+    await userge.bot.copy_message(STICK_GROUP, message.chat.id, reply_.id)
     bot_msg = await message.edit("`Kanging...`")
     await STICK_MSG.insert_one(
-        {"chat_id": message.chat.id, "msg_id": bot_msg.message_id}
+        {"chat_id": message.chat.id, "msg_id": bot_msg.id}
     )
 
 

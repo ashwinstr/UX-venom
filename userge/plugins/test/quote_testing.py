@@ -43,7 +43,7 @@ async def q_pic(message: Message):
     elif input_:
         input_str = input_.strip()
     else:
-        reply_to = reply_.message_id
+        reply_to = reply_.id
         input_str = reply_.text or reply_.caption
     pfp_ = None
     msg_ = await message.edit("`Making quote pic...`")

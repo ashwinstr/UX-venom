@@ -75,7 +75,7 @@ async def make_tweet(message: Message):
             chat_id=message.chat.id,
             query_id=result.query_id,
             result_id=result.results[0].id,
-            reply_to_message_id=reply_.message_id,
+            reply_to_message_id=reply_.id,
         ),
         message.delete(),
     )
@@ -111,7 +111,7 @@ async def make_quote(message: Message):
         return await message.edit("`Text not found...`", del_in=5)
     await message.edit("`Making quote...`")
     if "-r" in message.flags:
-        reply_msg = await userge.get_messages(message.chat.id, reply_.message_id)
+        reply_msg = await userge.get_messages(message.chat.id, reply_.id)
         reply_name = reply_msg.reply_to_message.from_user.first_name
         reply_text = (reply_msg.reply_to_message.text).splitlines()[0]
     else:
@@ -149,7 +149,7 @@ async def make_quote(message: Message):
             chat_id=message.chat.id,
             query_id=result.query_id,
             result_id=result.results[0].id,
-            reply_to_message_id=reply_.message_id,
+            reply_to_message_id=reply_.id,
         ),
         message.delete(),
     )

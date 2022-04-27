@@ -77,7 +77,7 @@ if userge.has_bot:
                 f"\n\n**ERROR:** `{new_m_e}`"
             )
         else:
-            BOT_MSGS.store(msg.message_id, message.from_user.id)
+            BOT_MSGS.store(msg.id, message.from_user.id)
 
     @userge.bot.on_message(
         allowForwardFilter
@@ -100,7 +100,7 @@ if userge.has_bot:
         else:
             if not reply.forward_sender_name:
                 return
-            if not (user_id := BOT_MSGS.search(reply.message_id)):
+            if not (user_id := BOT_MSGS.search(reply.id)):
                 await userge.bot.send_message(
                     Config.OWNER_ID[0],
                     "`You can't reply to old messages with if user's"
@@ -256,7 +256,7 @@ if userge.has_bot:
             await message.reply("Reply to a message to see user info")
             return
         info_msg = await message.reply("`🔎 Searching for this user in my database ...`")
-        if uid_from_db := BOT_MSGS.search(reply.message_id):
+        if uid_from_db := BOT_MSGS.search(reply.id):
             try:
                 user_ = await userge.bot.get_user_dict(uid_from_db, attr_dict=True)
             except Exception:
@@ -288,7 +288,7 @@ def extract_content(msg: Message):  # Modified a bound method
             reason = id_reason
         if replied.forward_sender_name and id_reason:
             reason = id_reason
-            user_id = BOT_MSGS.search(replied.message_id)
+            user_id = BOT_MSGS.search(replied.id)
     else:
         if id_reason:
             data = id_reason.split(maxsplit=1)

@@ -194,12 +194,12 @@ async def get_response(msg, filter_user: Union[int, str] = 0, timeout: int = 5, 
         except:
             raise "Invalid user."
     for msg_ in range(1, 6):
-        msg_id = msg.message_id + msg_
+        msg_id = msg.id + msg_
         try:
             response = await userge.get_messages(msg.chat.id, msg_id)
         except:
             raise "No response found."
-        if response.reply_to_message.message_id == msg.message_id:
+        if response.reply_to_message.id == msg.id:
             if filter_user:
                 if response.from_user.id == user_.id:
                     if mark_read:

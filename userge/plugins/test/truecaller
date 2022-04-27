@@ -22,12 +22,12 @@ async def true_c_(message: Message):
     if not num:
         if reply:
             num = reply.text
-            reply_to = reply.message_id
+            reply_to = reply.id
         else:
             await message.edit("Provide number to search...", del_in=5)
             return
     else:
-        reply_to = message.message_id
+        reply_to = message.id
     if not num.startswith("+"):
         await message.edit(
             "Provide number in <b><u>international</u></b> format...", del_in=5

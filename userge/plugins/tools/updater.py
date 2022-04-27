@@ -103,7 +103,7 @@ async def check_update(message: Message):
                 be_update = time()
                 await UPDATE_MSG.update_one(
                     {"_id": "UPDATE_MSG"},
-                    {"$set": {"message": f"{update.chat.id}/{update.message_id}"}},
+                    {"$set": {"message": f"{update.chat.id}/{update.id}"}},
                     upsert=True,
                 )
                 await UPDATE_MSG.update_one(

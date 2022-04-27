@@ -123,7 +123,7 @@ async def handle_afk_incomming(message: Message) -> None:
                 "#GROUP\n"
                 f"{user_dict['mention']} tagged you in [{chat.title}](http://t.me/{chat.username})\n\n"
                 f"{message.text}\n\n"
-                f"[goto_msg](https://t.me/c/{str(chat.id)[4:]}/{message.message_id})"
+                f"[goto_msg](https://t.me/c/{str(chat.id)[4:]}/{message.id})"
             )
         )
     coro_list.append(

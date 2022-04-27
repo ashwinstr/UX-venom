@@ -60,7 +60,7 @@ async def gen_meme(message: Message):
     username = Config.IMGFLIP_ID
     password = Config.IMGFLIP_PASS
     reply = message.reply_to_message
-    reply_id = reply.message_id if reply else None
+    reply_id = reply.id if reply else None
     params = {
         "username": username,
         "password": password,

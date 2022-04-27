@@ -38,7 +38,7 @@ async def flac_bot(message: Message):
         return await message.edit("`Couldn't find the song...`", del_in=5)
     reply_ = message.reply_to_message
     if reply_:
-        reply_to = reply_.message_id
+        reply_to = reply_.id
     else:
         reply_to = None
     try:
@@ -51,7 +51,7 @@ async def flac_bot(message: Message):
             await conv.get_response(mark_read=True)
             music_ = await conv.get_response(mark_read=True)
         await userge.copy_message(
-            message.chat.id, bot_, music_.message_id, reply_to_message_id=reply_to
+            message.chat.id, bot_, music_.id, reply_to_message_id=reply_to
         )
         await message.delete()
     except BaseException as e:

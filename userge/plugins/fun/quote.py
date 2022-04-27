@@ -32,22 +32,22 @@ async def quotecmd(message: Message):
                 return
             num_ = min(int(limit), 24)
             async for msg in userge.iter_history(
-                message.chat.id, limit=num_, offset_id=reply.message_id, reverse=True
+                message.chat.id, limit=num_, offset_id=reply.id, reverse=True
             ):
-                if msg.message_id != message.message_id:
-                    quote_list.append(msg.message_id)
+                if msg.id != message.id:
+                    quote_list.append(msg.id)
             if message.filtered_input_str:
                 self_mid = True
                 await message.edit(message.filtered_input_str)
         else:
-            quote_list.append(reply.message_id)
+            quote_list.append(reply.id)
             if message.input_str:
                 self_mid = True
                 await message.edit(message.input_str)
     else:
         args = message.input_str
     if self_mid:
-        quote_list.append(message.message_id)
+        quote_list.append(message.id)
     else:
         await message.delete()
     if not args and len(quote_list) == 0:
@@ -71,7 +71,7 @@ async def quotecmd(message: Message):
             if not (quote.sticker or quote.document):
                 await message.err("something went wrong!")
                 return
-            message_id = reply.message_id if reply else None
+            message_id = reply.id if reply else None
             if quote.sticker:
                 await userge.send_sticker(
                     chat_id=message.chat.id,

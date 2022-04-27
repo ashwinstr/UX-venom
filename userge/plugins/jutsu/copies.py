@@ -72,7 +72,7 @@ async def copy_channel_(message: Message):
         f"`Copying posts from `<b>{from_.title}</b>` to `<b>{to_.title}</b>..."
     )
     async for post in userge.search_messages(from_.id):
-        list_.append(post.message_id)
+        list_.append(post.id)
     list_.reverse()
     try:
         for one_msg in list_:
@@ -111,7 +111,7 @@ async def copy_message(message: Message):
     fwd_ = await reply_.forward(log_)
     link_ = fwd_.link
     type_ = msg_type(reply_)
-    await COPIED.insert_one({"msg_id": fwd_.message_id, "type": type_, "link": link_})
+    await COPIED.insert_one({"msg_id": fwd_.id, "type": type_, "link": link_})
     await message.edit("`Copied the replied message...`", del_in=5)
 
 

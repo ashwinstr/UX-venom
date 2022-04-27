@@ -154,6 +154,6 @@ async def op_(message: Message):
         chat_id=message.chat.id,
         query_id=x.query_id,
         result_id=x.results[0].id,
-        reply_to_message_id=replied.message_id,
+        reply_to_message_id=replied.id,
     )
     await message.delete()

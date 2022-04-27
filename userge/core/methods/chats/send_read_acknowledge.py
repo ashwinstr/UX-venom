@@ -54,9 +54,9 @@ class SendReadAcknowledge(RawClient):  # pylint: disable=missing-class-docstring
         if max_id is None:
             if message:
                 if isinstance(message, list):
-                    max_id = max(msg.message_id for msg in message)
+                    max_id = max(msg.id for msg in message)
                 else:
-                    max_id = message.message_id
+                    max_id = message.id
             else:
                 max_id = 0
         if clear_mentions:

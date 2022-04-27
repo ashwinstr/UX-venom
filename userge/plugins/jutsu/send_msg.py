@@ -14,7 +14,7 @@ async def send_message_and_reply(message: Message):
     """send message with sudo"""
     text_ = message.input_str
     reply_ = message.reply_to_message
-    reply_to = reply_.message_id if reply_ else None
+    reply_to = reply_.id if reply_ else None
     try:
         await userge.send_message(
             message.chat.id,

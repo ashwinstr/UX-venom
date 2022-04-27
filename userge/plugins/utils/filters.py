@@ -259,7 +259,7 @@ async def chat_filter(message: Message) -> None:
                     chat_id=message.chat.id,
                     user_id=message.from_user.id,
                     #                    dis_preview=FILTERS_DATA["dis_preview"],
-                    reply_to_message_id=message.message_id,
+                    reply_to_message_id=message.id,
                 )
     except RuntimeError:
         pass

@@ -54,7 +54,7 @@ async def usx_(message: Message):
     webp_file = os.path.join(Config.DOWN_PATH, image_name)
     im_composite.save(webp_file, "WebP")
     await message.delete()
-    message_id = replied.message_id if replied else None
+    message_id = replied.id if replied else None
     await message.client.send_sticker(
         chat_id=message.chat.id, sticker=webp_file, reply_to_message_id=message_id
     )

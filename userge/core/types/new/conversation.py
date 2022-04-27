@@ -161,7 +161,7 @@ class Conversation:
         """
         return await self._client.forward_messages(chat_id=self._chat_id,
                                                    from_chat_id=message.chat.id,
-                                                   message_ids=message.message_id)
+                                                   message_ids=message.id)
 
     @staticmethod
     def init(client: _CL_TYPE) -> None:

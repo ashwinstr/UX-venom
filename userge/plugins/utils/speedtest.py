@@ -23,9 +23,9 @@ async def speedtst(message: Message):
     user = " ".join([me.first_name, me.last_name or ""])
     reply = message.reply_to_message
     if reply:
-        reply_to = reply.message_id
+        reply_to = reply.id
     else:
-        reply_to = message.message_id
+        reply_to = message.id
     await message.edit("`Running speed test . . .`")
     try:
         test = speedtest.Speedtest()

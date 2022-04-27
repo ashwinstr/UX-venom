@@ -89,7 +89,7 @@ async def get_thumb_nail(message: Message):
             chat_id=message.chat.id,
             document=Config.THUMB_PATH,
             disable_notification=True,
-            reply_to_message_id=message.message_id,
+            reply_to_message_id=message.id,
         )
         await CHANNEL.fwd_msg(msg)
         await message.delete()

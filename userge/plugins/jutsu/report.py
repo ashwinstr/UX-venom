@@ -81,7 +81,7 @@ async def report_(message: Message):
         chat=chat_id,
         user_id=user_.id,
         msg=msg_en,
-        msg_id=msg_en.message_id,
+        msg_id=msg_en.id,
         reason=reason_,
     )
     msg_ = (

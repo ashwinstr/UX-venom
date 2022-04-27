@@ -144,7 +144,7 @@ if userge.has_bot:
                     caption=p_name,
                     parse_mode="html",
                     disable_notification=True,
-                    reply_to_message_id=c_q.message.message_id,
+                    reply_to_message_id=c_q.message.id,
                 )
             else:
                 await c_q.answer("❌ ERROR: Plugin Not Found !")

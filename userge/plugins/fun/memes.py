@@ -409,7 +409,7 @@ async def decide_(message: Message):
     chat_id = message.chat.id
     message_id = None
     if message.reply_to_message:
-        message_id = message.reply_to_message.message_id
+        message_id = message.reply_to_message.id
     await message.delete()
     await message.client.send_photo(
         chat_id=chat_id,

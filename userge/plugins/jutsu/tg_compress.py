@@ -26,7 +26,7 @@ async def compress_(message: Message):
             message.chat.id,
             down_,
             force_document=True,
-            reply_to_message_id=reply_.message_id,
+            reply_to_message_id=reply_.id,
         )
         await message.delete()
         os.remove(down_)
@@ -34,11 +34,11 @@ async def compress_(message: Message):
     await message.reply("`Compressing...`")
     if msg_type(reply_) == "photo":
         await userge.send_photo(
-            message.chat.id, down_, reply_to_message_id=reply_.message_id
+            message.chat.id, down_, reply_to_message_id=reply_.id
         )
     elif msg_type(reply_) == "video":
         await userge.send_video(
-            message.chat.id, down_, reply_to_message_id=reply_.message_id
+            message.chat.id, down_, reply_to_message_id=reply_.id
         )
     else:
         await reply_.reply("The replied document is not compressible...", del_in=5)

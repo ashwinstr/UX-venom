@@ -385,7 +385,7 @@ async def fban_p(message: Message):
         try:
             msg_en = await userge.get_messages(chat_id, int(msg_id))
             user = msg_en.from_user.id
-            proof = msg_en.message_id
+            proof = msg_en.id
         except BaseException:
             await message.edit(
                 "`Provide a proper spam message link to report...`", del_in=5
@@ -402,7 +402,7 @@ async def fban_p(message: Message):
         input = message.filtered_input_str
         reason = input
         msg_en = reply
-        proof = msg_en.message_id
+        proof = msg_en.id
     fps = True
     if (
         user in Config.SUDO_USERS

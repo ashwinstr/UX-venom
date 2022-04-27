@@ -154,7 +154,7 @@ Warns: {wcount}/{max_warns}
 
         buttons = InlineKeyboardMarkup([btn_row])
         reply_id = (
-            message.reply_to_message.message_id if message.reply_to_message else None
+            message.reply_to_message.id if message.reply_to_message else None
         )
         await userge.bot.send_message(
             message.chat.id,
@@ -434,7 +434,7 @@ if userge.has_bot:
                 message_id=int(log_id_),
                 user_id=u_user,
                 chat_id=u_user,
-                reply_to_message_id=message.message_id,
+                reply_to_message_id=message.id,
                 allow_random=False,
             )
         except UserIsBlocked:

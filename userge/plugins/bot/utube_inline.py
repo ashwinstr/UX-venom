@@ -217,7 +217,7 @@ if userge.has_bot:
             log=False,
         )
         refresh_vid = await userge.bot.get_messages(
-            Config.LOG_CHANNEL_ID, uploaded_media.message_id
+            Config.LOG_CHANNEL_ID, uploaded_media.id
         )
         f_id = get_file_id(refresh_vid)
         if downtype == "v":

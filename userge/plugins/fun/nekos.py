@@ -65,7 +65,7 @@ async def neko_life(message: Message):
 
 async def send_nekos(message: Message, link: str):
     reply = message.reply_to_message
-    reply_id = reply.message_id if reply else None
+    reply_id = reply.id if reply else None
     if link.endswith(".gif"):
         #  Bots can't use "unsave=True"
         bool_unsave = not message.client.is_bot

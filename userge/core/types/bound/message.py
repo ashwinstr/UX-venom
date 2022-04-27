@@ -117,8 +117,8 @@ class Message(RawMessage):
     @property
     def process_is_canceled(self) -> bool:
         """ Returns True if process canceled """
-        if self.message_id in _CANCEL_LIST:
-            _CANCEL_LIST.remove(self.message_id)
+        if self.id in _CANCEL_LIST:
+            _CANCEL_LIST.remove(self.id)
             self._process_canceled = True
         return self._process_canceled
 
@@ -163,7 +163,7 @@ class Message(RawMessage):
 
     def cancel_the_process(self) -> None:
         """ Set True to the self.process_is_canceled """
-        _CANCEL_LIST.append(self.message_id)
+        _CANCEL_LIST.append(self.id)
 
     def _filter(self) -> None:
         if self._filtered:
@@ -246,8 +246,8 @@ class Message(RawMessage):
         Returns:
             On success, the sent Message is returned.
         """
-        reply_to_id = self.reply_to_message.message_id if self.reply_to_message \
-            else self.message_id
+        reply_to_id = self.reply_to_message.id if self.reply_to_message \
+            else self.id
         if delete_message:
             asyncio.get_event_loop().create_task(self.delete())
         if log and isinstance(log, bool):
@@ -328,7 +328,7 @@ class Message(RawMessage):
         if quote is None:
             quote = self.chat.type != "private"
         if reply_to_message_id is None and quote:
-            reply_to_message_id = self.message_id
+            reply_to_message_id = self.id
         if log and isinstance(log, bool):
             log = self._module
         return await self._client.send_message(chat_id=self.chat.id,
@@ -396,7 +396,7 @@ class Message(RawMessage):
         try:
             return await self._client.edit_message_text(
                 chat_id=self.chat.id,
-                message_id=self.message_id,
+                message_id=self.id,
                 text=text,
                 del_in=del_in,
                 log=log,
@@ -414,7 +414,7 @@ class Message(RawMessage):
                                        disable_web_page_preview=disable_web_page_preview,
                                        reply_markup=reply_markup)
                 if isinstance(msg, Message):
-                    self.message_id = msg.message_id  # pylint: disable=W0201
+                    self.id = msg.id  # pylint: disable=W0201
                 return msg
             raise m_er
 

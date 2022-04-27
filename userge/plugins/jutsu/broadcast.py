@@ -252,11 +252,11 @@ async def post_(message: Message):
             return
         if BROAD_TAGGING:
             broad = await userge.send_message(chat_.id, "#BROADCAST")
-            broad_id = broad.message_id
+            broad_id = broad.id
         else:
             broad_id = None
         await userge.copy_message(
-            chat_.id, message.chat.id, reply_.message_id, reply_to_message_id=broad_id
+            chat_.id, message.chat.id, reply_.id, reply_to_message_id=broad_id
         )
         if chat_.type in ["private", "bot"]:
             chat_name = full_name(chat_)
@@ -273,13 +273,13 @@ async def post_(message: Message):
             if "-all" in flags:
                 if BROAD_TAGGING:
                     broad = await userge.send_message(chats_["chat_id"], "#BROADCAST")
-                    broad_id = broad.message_id
+                    broad_id = broad.id
                 else:
                     broad_id = None
                 await userge.copy_message(
                     chats_["chat_id"],
                     message.chat.id,
-                    reply_.message_id,
+                    reply_.id,
                     reply_to_message_id=broad_id,
                 )
                 total += 1
@@ -289,13 +289,13 @@ async def post_(message: Message):
                         broad = await userge.send_message(
                             chats_["chat_id"], "#BROADCAST"
                         )
-                        broad_id = broad.message_id
+                        broad_id = broad.id
                     else:
                         broad_id = None
                     await userge.copy_message(
                         chats_["chat_id"],
                         message.chat.id,
-                        reply_.message_id,
+                        reply_.id,
                         reply_to_message_id=broad_id,
                     )
                     total += 1
@@ -305,13 +305,13 @@ async def post_(message: Message):
                         broad = await userge.send_message(
                             chats_["chat_id"], "#BROADCAST"
                         )
-                        broad_id = broad.message_id
+                        broad_id = broad.id
                     else:
                         broad_id = None
                     await userge.copy_message(
                         chats_["chat_id"],
                         message.chat.id,
-                        reply_.message_id,
+                        reply_.id,
                         reply_to_message_id=broad_id,
                     )
                     total += 1

@@ -52,13 +52,13 @@ async def ss_video(message: Message):
             await userge.send_document(
                 message.chat.id,
                 "ss.png",
-                reply_to_message_id=reply_.message_id,
+                reply_to_message_id=reply_.id,
             )
         else:
             await userge.send_photo(
                 message.chat.id,
                 "ss.png",
-                reply_to_message_id=reply_.message_id,
+                reply_to_message_id=reply_.id,
             )
         await message.delete()
     except BaseException as e:

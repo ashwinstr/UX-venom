@@ -24,9 +24,9 @@ async def sticklet(message: Message):
         return
     await message.delete()
     if message.reply_to_message:
-        reply_to = message.reply_to_message.message_id
+        reply_to = message.reply_to_message.id
     else:
-        reply_to = message.message_id
+        reply_to = message.id
     # https://docs.python.org/3/library/textwrap.html#textwrap.wrap
 
     sticktext = find_optimal_wrap(sticktext)

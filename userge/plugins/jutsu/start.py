@@ -51,7 +51,7 @@ class Start:
             {
                 "_id": "RESTART_MSG",
                 "chat_id": message.chat.id,
-                "message_id": message.message_id,
+                "message_id": message.id,
                 "text": text,
             }
         )

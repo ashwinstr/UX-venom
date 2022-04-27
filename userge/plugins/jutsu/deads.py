@@ -17,7 +17,7 @@ async def dead_(message: Message):
     await message.delete()
     reply_ = message.reply_to_message
     if reply_:
-        reply_id = reply_.message_id
+        reply_id = reply_.id
     else:
         reply_id = None
     link_ = "https://telegra.ph/file/55245d8d5cffdd6443994.mp4"

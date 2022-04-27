@@ -81,7 +81,7 @@ async def create_button(msg: Message):
     if not text:
         await msg.err("`need text too!`")
         return
-    message_id = replied.message_id if replied else None
+    message_id = replied.id if replied else None
     client = msg.client if msg.client.is_bot else msg.client.bot
     try:
         if replied and replied.media and file_id:
@@ -134,11 +134,11 @@ async def inline_buttons(message: Message):
     if message.input_str:
         msg_content = message.input_str
         if media_valid:
-            media_id = (await reply.forward(Config.LOG_CHANNEL_ID)).message_id
+            media_id = (await reply.forward(Config.LOG_CHANNEL_ID)).id
 
     elif reply:
         if media_valid:
-            media_id = (await reply.forward(Config.LOG_CHANNEL_ID)).message_id
+            media_id = (await reply.forward(Config.LOG_CHANNEL_ID)).id
             msg_content = reply.caption.html if reply.caption else None
         elif reply.text:
             msg_content = reply.text.html
@@ -220,7 +220,7 @@ async def noformat_message(message: Message):
                 chat_id=message.chat.id,
                 file_id=media,
                 caption=f"{msg_text}{buttons}",
-                reply_to_message_id=reply.message_id,
+                reply_to_message_id=reply.id,
                 parse_mode=None,
             ),
         )

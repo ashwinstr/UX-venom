@@ -25,7 +25,7 @@ async def progress(
     """progress function"""
     if message.process_is_canceled:
         await message.client.stop_transmission()
-    task_id = f"{message.chat.id}.{message.message_id}"
+    task_id = f"{message.chat.id}.{message.id}"
     if current == total:
         if task_id not in _TASKS:
             return

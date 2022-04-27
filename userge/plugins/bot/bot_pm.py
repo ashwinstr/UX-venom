@@ -310,7 +310,7 @@ My Master is : {owner_.flname}</b>
             except UserIsBlocked:
                 await CHANNEL.log("**Unblock your bot !**")
         if FloodConfig.ALERT[user_.id].get("fa_id") is None and fa_msg:
-            FloodConfig.ALERT[user_.id]["fa_id"] = fa_msg.message_id
+            FloodConfig.ALERT[user_.id]["fa_id"] = fa_msg.id
 
     @userge.bot.on_callback_query(filters.regex(pattern=r"^bot_pm_ban_([0-9]+)"))
     @check_owner

@@ -30,9 +30,9 @@ async def purge_(message: Message):
     if "l" in message.flags:
         limit = int(message.flags["l"])
         limit = min(limit, 100)
-        start_message = message.message_id - limit
+        start_message = message.id - limit
     if message.reply_to_message:
-        start_message = message.reply_to_message.message_id
+        start_message = message.reply_to_message.id
         if "u" in message.flags:
             from_user_id = message.reply_to_message.from_user.id
     if not start_message:
@@ -49,9 +49,9 @@ async def purge_(message: Message):
             and a_message.from_user
             and a_message.from_user.id == from_user_id
         ):
-            list_of_messages.append(a_message.message_id)
+            list_of_messages.append(a_message.id)
         if not from_user_id:
-            list_of_messages.append(a_message.message_id)
+            list_of_messages.append(a_message.id)
         if len(list_of_messages) >= 100:
             try:
                 await message.client.delete_messages(
@@ -67,7 +67,7 @@ async def purge_(message: Message):
         for a_message in await message.client.get_messages(
             chat_id=message.chat.id,
             replies=0,
-            message_ids=range(start_message, message.message_id),
+            message_ids=range(start_message, message.id),
         ):
             await handle_msg(a_message)
     else:
@@ -109,7 +109,7 @@ async def purgeme_(message: Message):
         )
     start_t = datetime.datetime.now()
     number = min(int(message.input_str), 100)
-    mid = message.message_id
+    mid = message.id
     msg_list = []
     # https://t.me/pyrogramchat/266224
     # search_messages takes some minutes to index new messages
@@ -119,12 +119,12 @@ async def purgeme_(message: Message):
     async for msg in userge.search_messages(
         message.chat.id, "", limit=number, from_user="me"
     ):
-        msg_list.append(msg.message_id)
+        msg_list.append(msg.id)
 
     async for new_msg in userge.iter_history(message.chat.id, offset_id=mid, offset=0):
         if new_msg.from_user.is_self:
-            msg_list.append(new_msg.message_id)
-        if old_msg > new_msg.date or (msg_list and (msg_list[-1] > new_msg.message_id)):
+            msg_list.append(new_msg.id)
+        if old_msg > new_msg.date or (msg_list and (msg_list[-1] > new_msg.id)):
             break
 
     # https://stackoverflow.com/questions/39734485/python-combining-two-lists-and-removing-duplicates-in-a-functional-programming

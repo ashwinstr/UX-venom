@@ -121,7 +121,7 @@ if userge.has_bot:
                         message_id=mid["msg_id"],
                         user_id=u_user.id,
                         chat_id=message.chat.id,
-                        reply_to_message_id=message.message_id,
+                        reply_to_message_id=message.id,
                         allow_random=False,
                     )
                 else:

@@ -27,7 +27,7 @@ API = "https://meme-api.herokuapp.com/gimme"
 async def reddit_fetch(message: Message):
     """Random reddit post"""
     reply = message.reply_to_message
-    reply_id = reply.message_id if reply else None
+    reply_id = reply.id if reply else None
     sub_r = message.input_str
     subreddit_api = f"{API}/{sub_r}" if sub_r else API
     try:

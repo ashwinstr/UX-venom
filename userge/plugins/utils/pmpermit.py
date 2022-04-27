@@ -268,9 +268,9 @@ async def view_current_noPM_msg(message: Message):
     """view current pm message"""
     reply = message.reply_to_message
     if reply:
-        reply_to = reply.message_id
+        reply_to = reply.id
     else:
-        reply_to = message.message_id
+        reply_to = message.id
     await message.edit(f"--Current PM message is as below--👇")
     await userge.send_message(
         message.chat.id, noPmMessage, reply_to_message_id=reply_to
@@ -286,9 +286,9 @@ async def view_current_blockPM_msg(message: Message):
     """view current block pm message"""
     reply = message.reply_to_message
     if reply:
-        reply_to = reply.message_id
+        reply_to = reply.id
     else:
-        reply_to = message.message_id
+        reply_to = message.id
     await message.edit(f"--Current blockPM message is as below--👇")
     await userge.send_message(
         message.chat.id, blocked_message, reply_to_message_id=reply_to
@@ -356,7 +356,7 @@ async def uninvitedPmHandler(message: Message):
                 noPmMessage.format_map(SafeDict(**user_dict))
                 + "\n`- Protected by USERGE-X`"
             )
-        ).message_id
+        ).id
         await asyncio.sleep(1)
         await CHANNEL.log(f"#NEW_MESSAGE\n{user_dict['mention']} has messaged you")
 

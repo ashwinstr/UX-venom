@@ -66,7 +66,7 @@ async def img_pdf(message: Message):
             write.write(file)
         os.remove(pdf_f)
         await userge.send_photo(
-            message.chat.id, "temp.png", reply_to_message_id=reply.message_id
+            message.chat.id, "temp.png", reply_to_message_id=reply.id
         )
         os.remove("temp.png")
         await edt.delete()
@@ -102,7 +102,7 @@ async def text_pdf(message: Message):
         await userge.send_document(
             message.chat.id,
             text,
-            reply_to_message_id=reply.message_id,
+            reply_to_message_id=reply.id,
         )
         os.remove(file)
         os.remove(text)
@@ -123,7 +123,7 @@ async def text_pdf(message: Message):
         await userge.send_document(
             message.chat.id,
             text,
-            reply_to_message_id=reply.message_id,
+            reply_to_message_id=reply.id,
         )
         os.remove(text)
         os.remove(file)
@@ -138,7 +138,7 @@ async def text_pdf(message: Message):
         await userge.send_document(
             message.chat.id,
             text,
-            reply_to_message_id=reply.message_id,
+            reply_to_message_id=reply.id,
         )
         os.remove(text)
         os.remove(file)
@@ -203,7 +203,7 @@ async def scan_pdf(message: Message):
     scann = f"Scanned {scann.split('.')[0]}.pdf"
     im1.save(scann)
     await userge.send_document(
-        message.chat.id, scann, reply_to_message_id=reply.message_id
+        message.chat.id, scann, reply_to_message_id=reply.id
     )
     await message.delete()
     os.remove(media)
@@ -306,7 +306,7 @@ async def save_pdf(message: Message):
 )
 async def send_pdf(message: Message):
     """merge and send pdf"""
-    reply = message.reply_to_message.message_id if message.reply_to_message else None
+    reply = message.reply_to_message.id if message.reply_to_message else None
     if not os.path.exists(f"{Config.DOWN_PATH}/pdf_merge/scan1.pdf"):
         await message.edit(
             "First select pages by replying {Config.CMD_TRIGGER}pdf_save to image/pdf(s) which you want to make multi-page pdf file...",
