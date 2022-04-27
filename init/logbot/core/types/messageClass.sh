@@ -27,8 +27,8 @@ _Message.chat_id() {
     test "$1" = "=" && _Message.property chat_id = $2 || _Message.property chat_id
 }
 
-_Message.id() {
-    test "$1" = "=" && _Message.property id = $2 || _Message.property id
+_Message.message_id() {
+    test "$1" = "=" && _Message.property message_id = $2 || _Message.property message_id
 }
 
 _Message.text() {
@@ -38,24 +38,24 @@ _Message.text() {
 _Message.parse() {
     _Message.id = $1
     _Message.chat_id = $(echo $2 | jq .result.chat.id)
-    _Message.id = $(echo $2 | jq .result.id)
+    _Message.message_id = $(echo $2 | jq .result.message_id)
     _Message.text = "$(echo $2 | jq -r .result.text)"
 }
 
 _Message.print() {
-    printf "{id: %s, chat_id: %s, id: %s, text: %s}\n" \
-$(_Message.id) $(_Message.chat_id) $(_Message.id) "$(_Message.text)"
+    printf "{id: %s, chat_id: %s, message_id: %s, text: %s}\n" \
+$(_Message.id) $(_Message.chat_id) $(_Message.message_id) "$(_Message.text)"
 }
 
 _Message.edit() {
-    api.editMessageText $(_Message.chat_id) $(_Message.id) "$1"
+    api.editMessageText $(_Message.chat_id) $(_Message.message_id) "$1"
     _Message.text = "$1"
 }
 
 _Message.reply() {
-    api.sendMessage $(_Message.chat_id) "$1" $(_Message.id)
+    api.sendMessage $(_Message.chat_id) "$1" $(_Message.message_id)
 }
 
 _Message.delete() {
-    api.deleteMessage $(_Message.chat_id) $(_Message.id) $(_Message.id)
+    api.deleteMessage $(_Message.chat_id) $(_Message.message_id) $(_Message.id)
 }
