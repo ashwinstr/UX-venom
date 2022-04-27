@@ -1,4 +1,4 @@
-FROM ashwinstr/UX-venom-docker:latest
+FROM ashwinstr/ux-venom-docker:latest
 
 COPY requirements.txt .
 
