@@ -43,7 +43,7 @@ _Message.parse() {
 }
 
 _Message.print() {
-    printf "{id: %s, chat_id: %s, message_id: %s, text: %s}\n" \
+    printf "{id: %s, chat_id: %s, id: %s, text: %s}\n" \
 $(_Message.id) $(_Message.chat_id) $(_Message.id) "$(_Message.text)"
 }
 

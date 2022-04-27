@@ -40,9 +40,12 @@ _getResponse() {
         else
             local errcode=$(echo $rawUpdate | jq .error_code)
             local desc=$(echo $rawUpdate | jq .description)
+            trap traceback ERR
             quit "invalid request ! (caused by core.api.$FUNCNAME)
 \terror_code : [$errcode]
-\tdescription : $desc"
+\tdescription : $desc
+
+\tERROR : $ERR"
         fi
         sleep 0.6
     fi
