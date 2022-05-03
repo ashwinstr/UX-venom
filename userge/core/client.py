@@ -216,7 +216,8 @@ class Userge(_AbstractUserge):
                 _LOG.info(_LOG_STR, f"Idling USERGE-X - {mode}")
                 idle()
             self.loop.run_until_complete(_finalize())
-        except (asyncio.exceptions.CancelledError, RuntimeError):
+        except (asyncio.exceptions.CancelledError, RuntimeError) as e:
+            _LOG.error(str(e))
             pass
         finally:
             self.loop.close()
