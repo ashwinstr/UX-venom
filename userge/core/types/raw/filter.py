@@ -148,13 +148,13 @@ class Filter:
         kwargs['check_client'] = kwargs['allow_via_bot'] and kwargs['check_client']
         kwargs['scope']: List[str] = []
         if allow_bots:
-            kwargs['scope'].append('ChatType.BOT')
+            kwargs['scope'].append(ChatType.BOT)
         if allow_private:
-            kwargs['scope'].append('ChatType.PRIVATE')
+            kwargs['scope'].append(ChatType.PRIVATE)
         if allow_channels:
-            kwargs['scope'].append('ChatType.CHANNEL')
+            kwargs['scope'].append(ChatType.CHANNEL)
         if allow_groups:
-            kwargs['scope'] += ['ChatType.GROUP', 'ChatType.SUPERGROUP']
+            kwargs['scope'] += [ChatType.GROUP, ChatType.SUPERGROUP]
         kwargs['check_perm'] = kwargs['check_change_info_perm'] \
             or kwargs['check_edit_perm'] or kwargs['check_delete_perm'] \
             or kwargs['check_restrict_perm'] or kwargs['check_promote_perm'] \

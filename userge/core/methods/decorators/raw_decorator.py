@@ -52,9 +52,9 @@ async def _update_u_cht(r_m: RawMessage) -> ChatMember:
     if r_m.chat.id not in {**_U_AD_CHT, **_U_NM_CHT}:
         user = await r_m.chat.get_member(_U_ID)
         user.can_all = None
-        if user.status == 'ChatMemberStatus.OWNER':
+        if user.status == ChatMemberStatus.OWNER:
             user.can_all = True
-        elif user.status == 'ChatMemberStatus.ADMINISTRATOR':
+        elif user.status == ChatMemberStatus.ADMINISTRATOR:
             _U_AD_CHT[r_m.chat.id] = user
         else:
             _U_NM_CHT[r_m.chat.id] = user
@@ -68,7 +68,7 @@ async def _update_u_cht(r_m: RawMessage) -> ChatMember:
 async def _update_b_cht(r_m: RawMessage) -> ChatMember:
     if r_m.chat.id not in {**_B_AD_CHT, **_B_NM_CHT}:
         bot = await r_m.chat.get_member(_B_ID)
-        if bot.status == 'ChatMemberStatus.ADMINISTRATOR':
+        if bot.status == ChatMemberStatus.ADMINISTRATOR:
             _B_AD_CHT[r_m.chat.id] = bot
         else:
             _B_NM_CHT[r_m.chat.id] = bot
@@ -114,7 +114,7 @@ async def _init(r_c: Union['_client.Userge', '_client.UsergeBot'],
 async def _raise_func(r_c: Union['_client.Userge', '_client.UsergeBot'],
                       r_m: RawMessage, text: str) -> None:
     # pylint: disable=protected-access
-    if r_m.chat.type in ('ChatType.PRIVATE', 'ChatType.BOT'):
+    if r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT):
         await r_m.reply(f"< **ERROR**: {text} ! >")
     else:
         await r_c._channel.log(f"{text}\nCaused By: [link]({r_m.link})", "ERROR")
@@ -135,7 +135,7 @@ async def _is_admin(r_c: Union['_client.Userge', '_client.UsergeBot'],
 
 def _get_chat_member(r_c: Union['_client.Userge', '_client.UsergeBot'],
                      r_m: RawMessage) -> Optional[ChatMember]:
-    if r_m.chat.type in ('ChatType.PRIVATE', 'ChatType.BOT'):
+    if r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT):
         return None
     if isinstance(r_c, _client.Userge):
         if r_m.chat.id in _U_AD_CHT:
@@ -237,7 +237,7 @@ class RawDecorator(RawClient):
                 if r_m.chat and r_m.chat.id in Config.DISABLED_CHATS:
                     return
                 await _init(r_c, r_m)
-                if r_m.chat.type == 'ChatType.SUPERGROUP':
+                if r_m.chat.type == ChatType.SUPERGROUP:
                     if ("­" in r_m.chat.title.lower()) and not await _is_admin(r_c, r_m):
                         return 
                 _raise = partial(_raise_func, r_c, r_m)
@@ -250,7 +250,7 @@ class RawDecorator(RawClient):
                         await _raise("`chat admin required`")
                     return
                 if r_m.chat and flt.check_perm:
-                    if not (r_m.chat.type in ('ChatType.PRIVATE', 'ChatType.BOT') and flt.check_pin_perm):
+                    if not (r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT) and flt.check_pin_perm):
                         is_admin = await _is_admin(r_c, r_m)
                         c_m = _get_chat_member(r_c, r_m)
                         if not c_m:
