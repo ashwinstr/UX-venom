@@ -16,7 +16,7 @@ import traceback
 from getpass import getuser
 from os import geteuid
 
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ParseMode
 
 from userge import Config, Message, userge
 from userge.utils import runcmd
@@ -95,7 +95,7 @@ async def eval_(message: Message):
         await message.edit(f"**Logs**: {CHANNEL.get_link(msg_id)}")
     elif output:
         await message.edit_or_send_as_file(
-            text=output, parse_mode="md", filename="eval.txt", caption=cmd
+            text=output, parse_mode=ParseMode.MARKDOWN, filename="eval.txt", caption=cmd
         )
     else:
         await message.delete()
@@ -128,7 +128,7 @@ async def exec_(message: Message):
 __Command:__\n`{cmd}`\n__PID:__\n`{pid}`\n__RETURN:__\n`{ret}`\n\n\
 **stderr:**\n`{err}`\n\n**stdout:**\n``{out}`` "
     await message.edit_or_send_as_file(
-        text=output, parse_mode="md", filename="exec.txt", caption=cmd
+        text=output, parse_mode=ParseMode.MARKDOWN, filename="exec.txt", caption=cmd
     )
 
 
@@ -172,7 +172,7 @@ async def term_(message: Message):
             await message.try_to_edit(out_data, parse_mode="html")
     out_data = f"<pre>{output}{t_obj.get_output}</pre>"
     await message.edit_or_send_as_file(
-        out_data, parse_mode="html", filename="term.txt", caption=cmd
+        out_data, parse_mode=ParseMode.HTML, filename="term.txt", caption=cmd
     )
 
 
