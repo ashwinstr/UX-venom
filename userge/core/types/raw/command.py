@@ -76,11 +76,7 @@ class Command(Filter):
                 lambda _, __, m:
                 m.reactions is None
             )
-            on_edit_flt = filters.create(
-                lambda _, __, m:
-                m.edit_date is not None
-            )
-            filters_ = filters_ & (outgoing_flt | incoming_flt) & no_react_flt & on_edit_flt
+            filters_ = filters_ & (outgoing_flt | incoming_flt) & no_react_flt
         return cls(_format_about(about), trigger, pattern, filters=filters_, name=cname, **kwargs)
 
     def __repr__(self) -> str:

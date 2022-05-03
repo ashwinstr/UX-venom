@@ -96,9 +96,6 @@ class OnCmd(RawDecorator):  # pylint: disable=missing-class-docstring
             allow_via_bot (``bool``, *optional*):
                 If ``True``, allow this via your bot, defaults to True.
 
-            allow_edit (``bool``, *optional*):
-                If ``True``, allow edits, defaults to True.
-
             check_client (``bool``, *optional*):
                 If ``True``, check client is bot or not before execute, defaults to False.
 
