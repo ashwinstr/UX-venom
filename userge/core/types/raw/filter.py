@@ -146,7 +146,7 @@ class Filter:
                **kwargs: Union[RawFilter, '_client.Userge', int, bool]
                ) -> Dict[str, Union[RawFilter, '_client.Userge', int, bool]]:
         kwargs['check_client'] = kwargs['allow_via_bot'] and kwargs['check_client']
-        kwargs['scope']: List[Chat] = []
+        kwargs['scope']: List[str] = []
         if allow_bots:
             kwargs['scope'].append('bot')
         if allow_private:
