@@ -136,7 +136,7 @@ class Userge(_AbstractUserge):
         if Config.HU_STRING_SESSION and Config.BOT_TOKEN:
             RawClient.DUAL_MODE = True
             kwargs['bot'] = UsergeBot(bot=self, **kwargs)
-        elif Config.HU_STRING_SESSION:
+        if Config.HU_STRING_SESSION:
             kwargs['session_string'] = Config.HU_STRING_SESSION
         else:
             kwargs['in_memory'] = True
