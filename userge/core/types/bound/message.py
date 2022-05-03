@@ -58,7 +58,7 @@ class Message(RawMessage):
         return cls(client, mvars, **kwargs)
 
     @property
-    def _client(self) -> Union['_client.Userge', '_client.UsergeBot']:
+    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
         """ returns client """
         return self._client
 
