@@ -251,7 +251,7 @@ class RawDecorator(RawClient):
                     return
                 if r_m.chat and flt.check_perm:
                     if not (r_m.chat.type in (ChatType.PRIVATE, ChatType.BOT) and flt.check_pin_perm):
-#                        is_admin = await _is_admin(r_c, r_m)
+                        is_admin = await _is_admin(r_c, r_m)
                         c_m = _get_chat_member(r_c, r_m)
                         if not c_m:
                             if isinstance(flt, types.raw.Command):
