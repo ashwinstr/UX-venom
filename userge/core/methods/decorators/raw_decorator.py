@@ -270,7 +270,7 @@ class RawDecorator(RawClient):
                                 if isinstance(flt, types.raw.Command):
                                     await _raise("`required permisson [delete_messages]`")
                                 return
-                            if flt.check_restrict_perm and not c_m.can_restrict_members:
+                            if flt.check_restrict_perm and not c_m.privileges.can_restrict_members:
                                 if isinstance(flt, types.raw.Command):
                                     if is_admin:
                                         await _raise("`required permisson [restrict_members]`")

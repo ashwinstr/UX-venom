@@ -19,7 +19,7 @@ from pyrogram.types import InlineKeyboardMarkup, Message as RawMessage
 from pyrogram.errors.exceptions import MessageAuthorRequired, MessageTooLong
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified, MessageIdInvalid
 from pyrogram.errors.exceptions.forbidden_403 import MessageDeleteForbidden
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ParseMode
 
 from userge import logging
 from ... import client as _client  # pylint: disable=unused-import
@@ -266,7 +266,7 @@ class Message(RawMessage):
                     del_in: int = -1,
                     log: Union[bool, str] = False,
                     quote: Optional[bool] = None,
-                    parse_mode: Union[str, object] = object,
+                    parse_mode: Union[str, object] = ParseMode,
                     disable_web_page_preview: Optional[bool] = None,
                     disable_notification: Optional[bool] = None,
                     reply_to_message_id: Optional[int] = None,
@@ -350,7 +350,7 @@ class Message(RawMessage):
                    del_in: int = -1,
                    log: Union[bool, str] = False,
                    sudo: bool = True,
-                   parse_mode: Union[str, object] = object,
+                   parse_mode: Union[str, object] = ParseMode,
                    disable_web_page_preview: Optional[bool] = None,
                    reply_markup: InlineKeyboardMarkup = None) -> Union['Message', bool]:
         """\nExample:
@@ -426,7 +426,7 @@ class Message(RawMessage):
                          text: str,
                          del_in: int = -1,
                          log: Union[bool, str] = False,
-                         parse_mode: Union[str, object] = object,
+                         parse_mode: Union[str, object] = ParseMode,
                          disable_web_page_preview: Optional[bool] = None,
                          reply_markup: InlineKeyboardMarkup = None,
                          **kwargs) -> Union['Message', bool]:
@@ -492,7 +492,7 @@ class Message(RawMessage):
                   del_in: int = -1,
                   log: Union[bool, str] = False,
                   sudo: bool = True,
-                  parse_mode: Union[str, object] = object,
+                  parse_mode: Union[str, object] = ParseMode,
                   disable_web_page_preview: Optional[bool] = None,
                   reply_markup: InlineKeyboardMarkup = None) -> Union['Message', bool]:
         """\nYou can send error messages using this method
@@ -547,7 +547,7 @@ class Message(RawMessage):
                         text: str,
                         del_in: int = -1,
                         log: Union[bool, str] = False,
-                        parse_mode: Union[str, object] = object,
+                        parse_mode: Union[str, object] = ParseMode,
                         disable_web_page_preview: Optional[bool] = None,
                         reply_markup: InlineKeyboardMarkup = None,
                         **kwargs) -> Union['Message', bool]:
@@ -606,7 +606,7 @@ class Message(RawMessage):
                                    del_in: int = -1,
                                    log: Union[bool, str] = False,
                                    sudo: bool = True,
-                                   parse_mode: Union[str, object] = object,
+                                   parse_mode: Union[str, object] = ParseMode,
                                    disable_web_page_preview: Optional[bool] = None,
                                    reply_markup: InlineKeyboardMarkup = None,
                                    **kwargs) -> Union['Message', bool]:
@@ -672,7 +672,7 @@ class Message(RawMessage):
                                     del_in: int = -1,
                                     log: Union[bool, str] = False,
                                     quote: Optional[bool] = None,
-                                    parse_mode: Union[str, object] = object,
+                                    parse_mode: Union[str, object] = ParseMode,
                                     disable_web_page_preview: Optional[bool] = None,
                                     disable_notification: Optional[bool] = None,
                                     reply_to_message_id: Optional[int] = None,
@@ -758,7 +758,7 @@ class Message(RawMessage):
                                          text: str,
                                          del_in: int = -1,
                                          log: Union[bool, str] = False,
-                                         parse_mode: Union[str, object] = object,
+                                         parse_mode: Union[str, object] = ParseMode,
                                          disable_web_page_preview: Optional[bool] = None,
                                          reply_markup: InlineKeyboardMarkup = None,
                                          **kwargs) -> Union['Message', bool]:
