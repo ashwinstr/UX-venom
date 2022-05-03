@@ -32,6 +32,7 @@ class OnCmd(RawDecorator):  # pylint: disable=missing-class-docstring
                allow_channels: bool = True,
                only_admins: bool = False,
                allow_via_bot: bool = True,
+               allow_edit: bool = True,
                check_client: bool = False,
                check_downpath: bool = False,
                check_change_info_perm: bool = False,
@@ -96,6 +97,9 @@ class OnCmd(RawDecorator):  # pylint: disable=missing-class-docstring
             allow_via_bot (``bool``, *optional*):
                 If ``True``, allow this via your bot, defaults to True.
 
+            allow_edit (``bool``, *optional*):
+                If ``True``, allow edits, defaults to True.
+
             check_client (``bool``, *optional*):
                 If ``True``, check client is bot or not before execute, defaults to False.
 
@@ -149,6 +153,7 @@ class OnCmd(RawDecorator):  # pylint: disable=missing-class-docstring
                                     allow_channels=allow_channels,
                                     only_admins=only_admins,
                                     allow_via_bot=allow_via_bot,
+                                    allow_edit=allow_edit,
                                     check_client=check_client,
                                     check_downpath=check_downpath,
                                     check_change_info_perm=check_change_info_perm,
