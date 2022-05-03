@@ -189,26 +189,26 @@ async def _both_have_perm(flt: Union['types.raw.Command', 'types.raw.Filter'],
         bot = await _update_b_cht(r_m)
     except PeerIdInvalid:
         return False
-    if flt.check_change_info_perm and not (
-            (user.can_all or user.privileges.can_change_info) and bot.privileges.can_change_info):
+    if flt.check_change_info_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_change_info) and bot.can_change_info):
         return False
-    if flt.check_edit_perm and not (
-            (user.can_all or user.privileges.can_edit_messages) and bot.privileges.can_edit_messages):
+    if flt.check_edit_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_edit_messages) and bot.can_edit_messages):
         return False
-    if flt.check_delete_perm and not (
-            (user.can_all or user.privileges.can_delete_messages) and bot.privileges.can_delete_messages):
+    if flt.check_delete_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_delete_messages) and bot.can_delete_messages):
         return False
-    if flt.check_restrict_perm and not (
-            (user.can_all or user.privileges.can_restrict_members) and bot.privileges.can_restrict_members):
+    if flt.check_restrict_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_restrict_members) and bot.can_restrict_members):
         return False
-    if flt.check_promote_perm and not (
-            (user.can_all or user.privileges.can_promote_members) and bot.privileges.can_promote_members):
+    if flt.check_promote_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_promote_members) and bot.can_promote_members):
         return False
-    if flt.check_invite_perm and not (
-            (user.can_all or user.privileges.can_invite_users) and bot.privileges.can_invite_users):
+    if flt.check_invite_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_invite_users) and bot.can_invite_users):
         return False
-    if flt.check_pin_perm and not (
-            (user.can_all or user.privileges.can_pin_messages) and bot.privileges.can_pin_messages):
+    if flt.check_pin_perm and (user.privileges and bot.privileges) and not (
+            (user.can_all or user.can_pin_messages) and bot.can_pin_messages):
         return False
     return True
 
