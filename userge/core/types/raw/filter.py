@@ -98,7 +98,6 @@ class Filter:
                  scope: List[str],
                  only_admins: bool,
                  allow_via_bot: bool,
-                 allow_edit: bool,
                  check_client: bool,
                  check_downpath: bool,
                  check_perm: bool,
@@ -115,7 +114,6 @@ class Filter:
         self.scope = scope
         self.only_admins = only_admins
         self.allow_via_bot = allow_via_bot
-        self.allow_edit = allow_edit
         self.check_client = check_client
         self.check_downpath = check_downpath
         self.check_perm = check_perm
