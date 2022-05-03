@@ -15,6 +15,7 @@ import asyncio
 from typing import Optional, Union, List
 
 from pyrogram.types import InlineKeyboardMarkup, MessageEntity
+from pyrogram.enums import ParseMode
 
 from userge import Config
 from userge.utils import secure_text
@@ -29,7 +30,7 @@ class EditMessageText(RawClient):  # pylint: disable=missing-class-docstring
                                 text: str,
                                 del_in: int = -1,
                                 log: Union[bool, str] = False,
-                                parse_mode: Union[str, object] = object,
+                                parse_mode: Union[str, object] = ParseMode,
                                 entities: List[MessageEntity] = None,
                                 disable_web_page_preview: Optional[bool] = None,
                                 reply_markup: InlineKeyboardMarkup = None
