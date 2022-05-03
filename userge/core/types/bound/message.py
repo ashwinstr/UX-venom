@@ -13,7 +13,6 @@ __all__ = ['Message']
 import re
 import asyncio
 from typing import List, Dict, Tuple, Union, Optional, Sequence
-from cachetools import Cache
 
 from pyrogram.types import InlineKeyboardMarkup, Message as RawMessage
 from pyrogram.errors.exceptions import MessageAuthorRequired, MessageTooLong
@@ -59,7 +58,7 @@ class Message(RawMessage):
         return cls(client, mvars, **kwargs)
 
     @property
-    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
+    def _client(self) -> Union['_client.Userge', '_client.UsergeBot']:
         """ returns client """
         return self._client
 
