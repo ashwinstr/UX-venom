@@ -21,7 +21,7 @@ from pyrogram import StopPropagation, ContinuePropagation
 from pyrogram.filters import Filter as RawFilter
 from pyrogram.types import Message as RawMessage, ChatMember
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ChatMemberStatus
 
 from userge import logging, Config
 from ...ext import RawClient
@@ -52,9 +52,9 @@ async def _update_u_cht(r_m: RawMessage) -> ChatMember:
     if r_m.chat.id not in {**_U_AD_CHT, **_U_NM_CHT}:
         user = await r_m.chat.get_member(_U_ID)
         user.can_all = None
-        if user.status == "creator":
+        if user.status == ChatMemberStatus.OWNER:
             user.can_all = True
-        if user.status in ("creator", "administrator"):
+        elif user.status == ChatMemberStatus.ADMINISTRATOR:
             _U_AD_CHT[r_m.chat.id] = user
         else:
             _U_NM_CHT[r_m.chat.id] = user
@@ -68,7 +68,7 @@ async def _update_u_cht(r_m: RawMessage) -> ChatMember:
 async def _update_b_cht(r_m: RawMessage) -> ChatMember:
     if r_m.chat.id not in {**_B_AD_CHT, **_B_NM_CHT}:
         bot = await r_m.chat.get_member(_B_ID)
-        if bot.status == "administrator":
+        if bot.status == ChatMemberStatus.ADMINISTRATOR:
             _B_AD_CHT[r_m.chat.id] = bot
         else:
             _B_NM_CHT[r_m.chat.id] = bot

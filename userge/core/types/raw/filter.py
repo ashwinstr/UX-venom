@@ -17,6 +17,7 @@ from pyrogram import filters as rawfilters
 from pyrogram.filters import Filter as RawFilter
 from pyrogram.handlers import MessageHandler
 from pyrogram.handlers.handler import Handler
+from pyrogram.enums import ChatType
 
 from userge import logging, Config
 from ... import client as _client, get_collection  # pylint: disable=unused-import
@@ -145,7 +146,7 @@ class Filter:
                **kwargs: Union[RawFilter, '_client.Userge', int, bool]
                ) -> Dict[str, Union[RawFilter, '_client.Userge', int, bool]]:
         kwargs['check_client'] = kwargs['allow_via_bot'] and kwargs['check_client']
-        kwargs['scope']: List[str] = []
+        kwargs['scope']: List[ChatType] = []
         if allow_bots:
             kwargs['scope'].append('bot')
         if allow_private:
