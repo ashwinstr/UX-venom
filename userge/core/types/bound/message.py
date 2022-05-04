@@ -42,6 +42,7 @@ class Message(RawMessage):
         self._process_canceled = False
         self._module = module
         self._kwargs = kwargs
+        self._cl = client
         super().__init__(client=client, **mvars)
 
     @classmethod
@@ -60,7 +61,7 @@ class Message(RawMessage):
     @property
     def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
         """ returns client """
-        return self._client
+        return self._cl
 
     @property
     def input_raw(self) -> str:
