@@ -50,7 +50,7 @@ class Message(RawMessage):
               message: RawMessage, **kwargs: Union[str, bool]) -> 'Message':
         """ parse message """
         mvars = vars(message)
-        for key_ in ['_client', '_filtered', '_filtered_input_str',
+        for key_ in ['_filtered', '_filtered_input_str',
                      '_flags', '_process_canceled', '_module', '_kwargs']:
             if key_ in mvars:
                 del mvars[key_]
