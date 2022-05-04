@@ -14,6 +14,8 @@ import requests
 import wget
 from cowpy import cow
 
+from pyrogram.enums import ParseMode
+
 from userge import Message, userge
 
 
@@ -46,7 +48,7 @@ async def lol_(message: Message):
         if i % 3 == 0:
             lol = "-_ "
         lol = lol[:-1] + "_-"
-        await message.try_to_edit(lol, parse_mode="html")
+        await message.try_to_edit(lol, parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd(
@@ -63,7 +65,7 @@ async def fun_(message: Message):
         if i % 3 == 0:
             fun = ";_ "
         fun = fun[:-1] + "_;"
-        await message.try_to_edit(fun, parse_mode="html")
+        await message.try_to_edit(fun, parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("Oof$", about={"header": "Ooooof"}, trigger="", allow_via_bot=False)
@@ -101,13 +103,13 @@ async def facepalm_(message: Message):
 @userge.on_cmd("cry$", about={"header": "y u du dis, i cri"})
 async def cry_(message: Message):
     """cry"""
-    await check_and_send(message, choice(CRI), parse_mode="html")
+    await check_and_send(message, choice(CRI), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("insult$", about={"header": "Check yourself ;)"})
 async def insult_(message: Message):
     """insult"""
-    await check_and_send(message, choice(INSULT_STRINGS), parse_mode="html")
+    await check_and_send(message, choice(INSULT_STRINGS), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd(
@@ -121,7 +123,7 @@ async def hi_(message: Message):
     """hi"""
     input_str = message.input_str
     if not input_str:
-        await message.edit(choice(HELLOSTR), parse_mode="html")
+        await message.edit(choice(HELLOSTR), parse_mode=ParseMode.HTML)
     else:
         args = input_str.split()
         if len(args) == 2:
@@ -188,31 +190,31 @@ async def react_(message: Message):
         out = choice(DOG)
     else:
         out = choice(FACEREACTS)
-    await check_and_send(message, out, parse_mode="html")
+    await check_and_send(message, out, parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("shg$", about={"header": "Shrug at it !!"})
 async def shrugger(message: Message):
     """shrugger"""
-    await check_and_send(message, choice(SHGS), parse_mode="html")
+    await check_and_send(message, choice(SHGS), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("chase$", about={"header": "You better start running"})
 async def chase_(message: Message):
     """chase"""
-    await check_and_send(message, choice(CHASE_STR), parse_mode="html")
+    await check_and_send(message, choice(CHASE_STR), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("run$", about={"header": "Let Me Run, run, RUNNN!"})
 async def run_(message: Message):
     """run"""
-    await check_and_send(message, choice(RUNS_STR), parse_mode="html")
+    await check_and_send(message, choice(RUNS_STR), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("metoo$", about={"header": "Haha yes"})
 async def metoo_(message: Message):
     """metoo"""
-    await check_and_send(message, choice(METOOSTR), parse_mode="html")
+    await check_and_send(message, choice(METOOSTR), parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd("10iq$", about={"header": "You retard !!"}, name="10iq")
@@ -829,7 +831,7 @@ async def kill_func(message):
     ]
     for i in range(10):
         await asyncio.sleep(0.6)
-        await message.edit(animation_chars[i % 10], parse_mode="html")
+        await message.edit(animation_chars[i % 10], parse_mode=ParseMode.HTML)
 
 
 THROW = ("throws", "flings", "chucks", "hurls")

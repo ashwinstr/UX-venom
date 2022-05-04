@@ -11,6 +11,7 @@ from re import compile as comp_regex
 from git import Repo
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.enums import ParseMode
 
 from userge import Config, Message, userge
 from userge.utils import check_owner, humanbytes
@@ -142,7 +143,7 @@ if userge.has_bot:
                     chat_id=c_q.message.chat.id,
                     document=plugin_loc,
                     caption=p_name,
-                    parse_mode="html",
+                    parse_mode=ParseMode.HTML,
                     disable_notification=True,
                     reply_to_message_id=c_q.message.id,
                 )

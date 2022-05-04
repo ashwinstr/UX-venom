@@ -10,6 +10,8 @@ import os
 
 import requests
 
+from pyrogram.enums import ParseMode
+
 from userge import Config, Message, pool, userge
 
 CHANNEL = userge.getCLogger(__name__)
@@ -67,7 +69,7 @@ async def ocr_gen(message: Message):
             "<a href='http://eepurl.com/bOLOcf'>HERE</a> "
             "<code>& add it to Heroku config vars</code> (<code>OCR_SPACE_API_KEY</code>)",
             disable_web_page_preview=True,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             del_in=0,
         )
         return

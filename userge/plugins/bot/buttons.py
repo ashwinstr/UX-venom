@@ -9,6 +9,7 @@ from re import compile as comp_regex
 import ujson
 from pyrogram.errors import BadRequest, UserIsBot
 from pyrogram.types import ReplyKeyboardRemove
+from pyrogram.enums import ParseMode
 
 from userge import Config, Message, get_collection, userge
 from userge.plugins.bot.bot_pm import get_bot_info

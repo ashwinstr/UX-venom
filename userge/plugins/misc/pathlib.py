@@ -24,6 +24,8 @@ from zipfile import ZipFile, is_zipfile
 
 from rarfile import RarFile, is_rarfile
 
+from pyrogram.enums import ParseMode
+
 from userge import Config, Message, pool, userge
 from userge.utils import humanbytes, time_formatter
 from userge.utils.exceptions import ProcessCanceled
@@ -399,7 +401,7 @@ async def ls_dir(message: Message) -> None:
     else:
         size = os.stat(str(path_)).st_size
         out += f"📄 <code>{path_.name}</code> <i>({humanbytes(size)})</i>\n"
-    await message.edit_or_send_as_file(out, parse_mode="html")
+    await message.edit_or_send_as_file(out, parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd(

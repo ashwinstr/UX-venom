@@ -19,6 +19,8 @@ from pyrogram.types import (
     InlineQueryResultPhoto,
     InputTextMessageContent,
 )
+from pyrogram.enums import ParseMode
+
 from youtubesearchpython import VideosSearch
 
 from userge import Config, Message, get_collection, userge
@@ -160,7 +162,7 @@ async def helpme(message: Message) -> None:
             else:
                 out_str = f"<i>No Module or Command Found for</i>: <code>{message.input_str}</code>"
     await message.edit(
-        out_str, del_in=0, parse_mode="html", disable_web_page_preview=True
+        out_str, del_in=0, parse_mode=ParseMode.HTML, disable_web_page_preview=True
     )
 
 

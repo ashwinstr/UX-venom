@@ -4,6 +4,7 @@
 
 from pyrogram import filters
 from pyrogram.errors import YouBlockedUser
+from pyrogram.enums import ParseMode
 
 from userge import Config, Message, userge
 from userge.helpers import full_name
@@ -55,7 +56,7 @@ async def f_stat(message: Message):
             f"User <b>{user_name}</b> (<code>{user_id}</code>) could not be found in @MissRose_bot's database."
         )
     else:
-        await message.edit(resp, parse_mode="html")
+        await message.edit(resp, parse_mode=ParseMode.HTML)
 
 
 @userge.on_cmd(
@@ -108,4 +109,4 @@ async def fban_stat(message: Message):
     if fail in resp:
         await message.edit(f"<b>ERROR:</b> Fed `{fed_id}` doesn't exist.")
     else:
-        await message.edit(resp.html, parse_mode="html")
+        await message.edit(resp.html, parse_mode=ParseMode.HTML)

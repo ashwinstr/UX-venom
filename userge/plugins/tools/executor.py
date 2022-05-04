@@ -169,7 +169,7 @@ async def term_(message: Message):
         if count >= Config.EDIT_SLEEP_TIMEOUT * 2:
             count = 0
             out_data = f"<pre>{output}{t_obj.read_line}</pre>"
-            await message.try_to_edit(out_data, parse_mode="html")
+            await message.try_to_edit(out_data, parse_mode=ParseMode.HTML)
     out_data = f"<pre>{output}{t_obj.get_output}</pre>"
     await message.edit_or_send_as_file(
         out_data, parse_mode=ParseMode.HTML, filename="term.txt", caption=cmd

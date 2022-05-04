@@ -14,6 +14,8 @@ from pytz import country_names as c_n
 from pytz import country_timezones as c_tz
 from pytz import timezone as tz
 
+from pyrogram.enums import ParseMode
+
 from userge import Config, Message, userge
 
 CHANNEL = userge.getCLogger(__name__)
@@ -52,7 +54,7 @@ async def weather_get(message: Message):
             "<a href='https://openweathermap.org'>HERE</a> "
             "<code>& add it to Heroku config vars</code> (<code>OPEN_WEATHER_MAP</code>)",
             disable_web_page_preview=True,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             del_in=0,
         )
         return

@@ -13,6 +13,7 @@ from hachoir.parser import createParser
 from PIL import Image
 from pyrogram.errors import FloodWait
 from pyrogram.types import CallbackQuery
+from pyrogram.enums import ParseMode
 
 from userge import Config, Message, userge
 from userge.plugins.misc.download import tg_download, url_download
@@ -242,7 +243,7 @@ async def doc_upload(
             force_document=True,
             thumb=thumb,
             caption=path.name,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             disable_notification=True,
             progress=progress,
             progress_args=(message, f"uploading {extra}", str_path),
@@ -305,7 +306,7 @@ async def vid_upload(
             width=width,
             height=height,
             caption=path.name,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             disable_notification=True,
             progress=progress,
             progress_args=(message, f"uploading {extra}", str_path, callback),
@@ -384,7 +385,7 @@ async def audio_upload(
             title=title,
             performer=artist,
             duration=duration,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             disable_notification=True,
             progress=progress,
             progress_args=(message, f"uploading {extra}", str_path, callback),
@@ -417,7 +418,7 @@ async def photo_upload(message: Message, path, del_path: bool = False, extra: st
             chat_id=message.chat.id,
             photo=str_path,
             caption=path.name,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
             disable_notification=True,
             progress=progress,
             progress_args=(message, f"uploading {extra}", str_path),

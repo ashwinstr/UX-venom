@@ -12,6 +12,7 @@ import os
 from typing import Sequence
 
 from pyrogram.types import ChatPermissions
+from pyrogram.enums import ParseMode
 
 from userge import Message, userge
 
@@ -353,7 +354,7 @@ async def view_perm(message: Message):
             chat_id=message.chat.id,
             photo=local_chat_photo,
             caption=permission_view_str,
-            parse_mode="html",
+            parse_mode=ParseMode.HTML,
         )
         os.remove(local_chat_photo)
         await message.delete()

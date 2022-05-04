@@ -19,6 +19,7 @@ from pyrogram import filters as _filters
 from pyrogram.filters import Filter
 from pyrogram.types import Message as RawMessage
 from pyrogram.handlers import MessageHandler
+from pyrogram.enums import ParseMode
 
 from userge import logging
 from userge.utils.exceptions import StopConversation
@@ -113,7 +114,7 @@ class Conversation:
 
     async def send_message(self,
                            text: str,
-                           parse_mode: Union[str, object] = object) -> RawMessage:
+                           parse_mode: Union[str, object] = ParseMode.DEFAULT) -> RawMessage:
         """\nSend text messages to the conversation.
 
         Parameters:

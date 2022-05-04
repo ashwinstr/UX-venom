@@ -9,7 +9,7 @@
 import os
 
 from pyrogram.errors.exceptions.bad_request_400 import BotMethodInvalid
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ParseMode
 
 from userge import Config, Message, userge
 
@@ -82,7 +82,7 @@ async def who_is(message: Message):
                 chat_id=message.chat.id,
                 photo=local_user_photo,
                 caption=message_out_str,
-                parse_mode="html",
+                parse_mode=ParseMode.HTML,
                 disable_notification=True,
             )
             os.remove(local_user_photo)

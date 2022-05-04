@@ -94,7 +94,7 @@ async def grp_log(_, message: Message):
                     GROUP_LOG_GROUP_ID,
                     log1,
                     reply_to_message_id=replied_msg.id,
-                    parse_mode="html",
+                    parse_mode=ParseMode.HTML,
                     disable_web_page_preview=True,
                 )
                 await asyncio.sleep(0.2)
@@ -132,7 +132,7 @@ async def grp_log(_, message: Message):
             await userge.send_message(
                 GROUP_LOG_GROUP_ID,
                 log2,
-                parse_mode="html",
+                parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
             )
             await asyncio.sleep(0.2)
@@ -159,7 +159,7 @@ async def grp_log(_, message: Message):
             await userge.send_message(
                 GROUP_LOG_GROUP_ID,
                 log3,
-                parse_mode="html",
+                parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
             )
             await asyncio.sleep(0.2)
@@ -205,7 +205,7 @@ async def pm_log(_, message: Message):
             await userge.send_message(
                 Config.PM_LOG_GROUP_ID,
                 log,
-                parse_mode="html",
+                parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
             )
             await asyncio.sleep(0.2)
