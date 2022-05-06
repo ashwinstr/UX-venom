@@ -57,10 +57,10 @@ class Message(RawMessage):
             mvars['reply_to_message'] = cls.parse(client, mvars['reply_to_message'], **kwargs)
         return cls(client, mvars, **kwargs)
 
-#    @property
-#    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
-#        """ returns client """
-#        return self._client
+    @property
+    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
+        """ returns client """
+        return self._client
 
     @property
     def input_raw(self) -> str:
@@ -109,11 +109,11 @@ class Message(RawMessage):
         self._filter()
         return self._flags
 
-    @property
-    def replied(self):
-        """ Return reply_to_message"""
-        _replied = self.reply_to_message
-        return _replied
+#    @property
+#    def replied(self):
+#        " Return reply_to_message "
+#        _replied = self.reply_to_message
+#        return _replied
 
     @property
     def process_is_canceled(self) -> bool:
