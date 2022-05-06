@@ -42,7 +42,6 @@ class Message(RawMessage):
         self._process_canceled = False
         self._module = module
         self._kwargs = kwargs
-        self._client = _client
         super().__init__(client=client, **mvars)
 
     @classmethod
@@ -55,7 +54,7 @@ class Message(RawMessage):
             if key_ in mvars:
                 del mvars[key_]
         if mvars['reply_to_message']:
-            mvars['reply_to_message'] = cls.parse(client, mvars['reply_to_message'], **kwargs)
+            mvars['reply_to_message'] = cls.parse(client, message.reply_to_message, **kwargs)
         return cls(client, mvars, **kwargs)
 
     @property
