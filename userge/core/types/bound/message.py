@@ -42,7 +42,7 @@ class Message(RawMessage):
         self._process_canceled = False
         self._module = module
         self._kwargs = kwargs
-        self.client = client
+        self._client = _client
         super().__init__(client=client, **mvars)
 
     @classmethod
