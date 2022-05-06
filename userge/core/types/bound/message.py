@@ -42,6 +42,7 @@ class Message(RawMessage):
         self._process_canceled = False
         self._module = module
         self._kwargs = kwargs
+        self.client = client
         super().__init__(client=client, **mvars)
 
     @classmethod
@@ -109,11 +110,11 @@ class Message(RawMessage):
         self._filter()
         return self._flags
 
-#    @property
-#    def replied(self):
-#        " Return reply_to_message "
-#        _replied = self.reply_to_message
-#        return _replied
+    @property
+    def replied(self):
+        " Return reply_to_message "
+        _replied = self.reply_to_message
+        return _replied
 
     @property
     def process_is_canceled(self) -> bool:
