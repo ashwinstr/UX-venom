@@ -57,12 +57,10 @@ class Message(RawMessage):
             mvars['reply_to_message'] = cls.parse(client, mvars['reply_to_message'], **kwargs)
         return cls(client, mvars, **kwargs)
 
-    @property
-    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
-        """ returns client """
-        if self.replied:
-            self = self.replied
-        return self._client
+#    @property
+#    def client(self) -> Union['_client.Userge', '_client.UsergeBot']:
+#        """ returns client """
+#        return self._client
 
     @property
     def input_raw(self) -> str:
