@@ -29,7 +29,7 @@ async def _init() -> None:
     },
 )
 async def block_ing(message: Message):
-    "block user with reason"
+    " block user with reason "
     input_ = message.input_str
     if not input_:
         return await message.edit("`Provide a reason to block the user.`", del_in=5)
