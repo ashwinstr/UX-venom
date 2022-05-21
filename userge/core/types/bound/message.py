@@ -21,7 +21,7 @@ from pyrogram.errors.exceptions.forbidden_403 import MessageDeleteForbidden
 from pyrogram.enums import ChatType, ParseMode
 
 from userge import logging
-from ... import client as _client  # pylint: disable=unused-import
+from ... import client as _clients  # pylint: disable=unused-import
 
 _CANCEL_LIST: List[int] = []
 _ERROR_MSG_DELETE_TIMEOUT = 5
@@ -34,7 +34,7 @@ _LOG_STR = "<<<!  :::::  %s  :::::  !>>>"
 class Message(RawMessage):
     """ Modded Message Class For Userge """
     def __init__(self,
-                 client: Union[_client.Userge, _client.UsergeBot],
+                 client: Union[_clients.Userge, _clients.UsergeBot],
                  mvars: Dict[str, object], module: str, **kwargs: Union[str, bool]) -> None:
         self._filtered = False
         self._filtered_input_str = ''
@@ -45,7 +45,7 @@ class Message(RawMessage):
         super().__init__(client=client, **mvars)
 
     @classmethod
-    def parse(cls, client: Union[_client.Userge, _client.UsergeBot],
+    def parse(cls, client: Union[_clients.Userge, _clients.UsergeBot],
               message: RawMessage, **kwargs: Union[str, bool]) -> 'Message':
         """ parse message """
         mvars = vars(message)
@@ -58,7 +58,7 @@ class Message(RawMessage):
         return cls(client, mvars, **kwargs)
 
     @property
-    def client(self) -> Union[_client.Userge, _client.UsergeBot]:
+    def client(self) -> Union[_clients.Userge, _clients.UsergeBot]:
         """ returns client """
         return self._clients
 
