@@ -49,7 +49,7 @@ class Message(RawMessage):
               message: RawMessage, **kwargs: Union[str, bool]) -> 'Message':
         """ parse message """
         mvars = vars(message)
-        for key_ in ['_client', '_filtered', '_filtered_input_str',
+        for key_ in ['_clients', '_filtered', '_filtered_input_str',
                      '_flags', '_process_canceled', '_module', '_kwargs']:
             if key_ in mvars:
                 del mvars[key_]
@@ -60,7 +60,7 @@ class Message(RawMessage):
     @property
     def client(self) -> Union[_client.Userge, _client.UsergeBot]:
         """ returns client """
-        return self._client
+        return self._clients
 
     @property
     def input_raw(self) -> str:
@@ -211,7 +211,7 @@ class Message(RawMessage):
         m_id = split_link[-1]
         if c_id.isdigit() and len(c_id) == 10:
             c_id = int("-100" + c_id)
-        protected_content = await self._client.get_messages(c_id, int(m_id))
+        protected_content = await self._clients.get_messages(c_id, int(m_id))
         return await protected_content.copy(chat_id, reply_to_message_id=reply_to_message_id)
 
     async def send_as_file(self,
@@ -253,7 +253,7 @@ class Message(RawMessage):
             asyncio.get_event_loop().create_task(self.delete())
         if log and isinstance(log, bool):
             log = self._module
-        return await self._client.send_as_file(chat_id=self.chat.id,
+        return await self._clients.send_as_file(chat_id=self.chat.id,
                                                text=text,
                                                filename=filename,
                                                caption=caption,
@@ -332,7 +332,7 @@ class Message(RawMessage):
             reply_to_message_id = self.id
         if log and isinstance(log, bool):
             log = self._module
-        return await self._client.send_message(chat_id=self.chat.id,
+        return await self._clients.send_message(chat_id=self.chat.id,
                                                text=text,
                                                del_in=del_in,
                                                log=log,
